@@ -4,8 +4,7 @@ fn main() {
         .cpp_link_stdlib(None)
         .cpp(true)
         .files([
-            "src/cpp_src/foolib.hpp",
-            "src/cpp_src/foolib.cpp"
+            "cpp_src/LinearMath/btScalar.h"
         ])
         .compile("foolib");
 }
