@@ -3,7 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
-                
+                "src/wasm_src/cpp_wasm_std/"
             ],
             "defines": [
                 "_DEBUG"

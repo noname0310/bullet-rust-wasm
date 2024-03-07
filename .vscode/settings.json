@@ -1,5 +1,6 @@
 {
     "rust-analyzer.linkedProjects": [
         "./src/wasm_src/Cargo.toml"
-    ]
+    ],
+    "C_Cpp.errorSquiggles": "enabled"
 }
