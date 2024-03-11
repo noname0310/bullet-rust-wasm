@@ -3,8 +3,15 @@ fn main() {
         .archiver("llvm-ar")
         .cpp_link_stdlib(None)
         .cpp(true)
+        .flag("-xc++")
+        .includes([
+            "cpp_wasm_std"
+        ])
         .files([
             "cpp_src/LinearMath/btScalar.h"
         ])
-        .compile("foolib");
+        .compile("bullet");
+
+    println!("cargo:rerun-if-changed=cpp_wasm_std");
+    println!("cargo:rerun-if-changed=cpp_src/LinearMath/btScalar.h");
 }
