@@ -1,9 +1,11 @@
+mod math;
+
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 
 #[link(name = "bullet")]
 extern "C" {
-    // pub fn test_function(i: i32) -> i32;
+    pub fn bt_get_version() -> i32;
 }
 
 // #[no_mangle]
@@ -22,4 +24,9 @@ extern "C" {
 #[wasm_bindgen(js_name = init)]
 pub fn init() {
     console_error_panic_hook::set_once();
+
+    unsafe {
+        let version = bt_get_version();
+        console::log_1(&format!("Bullet version: {}", version).into());
+    }
 }
