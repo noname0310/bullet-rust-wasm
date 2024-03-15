@@ -8,6 +8,8 @@ extern "C" {
     pub fn __wasm_call_ctors();
 
     pub fn bt_get_version() -> i32;
+
+    pub fn bt_sin(x: f32) -> f32;
 }
 
 // #[no_mangle]
@@ -34,5 +36,8 @@ pub fn init() {
     unsafe {
         let version = bt_get_version();
         console::log_1(&format!("Bullet version: {}", version).into());
+
+        let sin = bt_sin(1.0);
+        console::log_1(&format!("sin(1.0): {}", sin).into());
     }
 }

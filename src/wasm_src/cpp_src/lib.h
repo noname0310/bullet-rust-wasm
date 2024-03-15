@@ -7,3 +7,7 @@ extern "C" {
 extern "C" int bt_get_version() {
     return btGetVersion();
 }
+
+extern "C" float bt_sin(float x) {
+    return btSin(x);
+}
