@@ -1,9 +1,16 @@
 fn main() {
     cc::Build::new()
+        .warnings(false)
         .archiver("llvm-ar")
         .cpp_link_stdlib(None)
         .cpp(true)
         .flag("-xc++")
+        .flag("-matomics")
+        .flag("-mbulk-memory")
+        .flag("-msimd128")
+        .flag("-Wno-c++11-narrowing")
+        .flag("-Wno-deprecated-declarations")
+        .flag("-Wno-#pragma-messages")
         .includes([
             "cpp_wasm_std"
         ])

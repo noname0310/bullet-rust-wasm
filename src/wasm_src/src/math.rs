@@ -62,3 +62,18 @@ unsafe extern "C" fn bw_powf(x: f32, y: f32) -> f32 {
 unsafe extern "C" fn bw_fmodf(x: f32, y: f32) -> f32 {
     x % y
 }
+
+#[no_mangle]
+unsafe extern "C" fn bw_isinf(x: f64) -> bool {
+    x.is_infinite()
+}
+
+#[no_mangle]
+unsafe extern "C" fn bw_isnan(x: f64) -> bool {
+    x.is_nan()
+}
+
+#[no_mangle]
+unsafe extern "C" fn bw_fabs(x: f64) -> f64 {
+    x.abs()
+}

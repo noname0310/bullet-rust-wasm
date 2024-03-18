@@ -1,5 +1,7 @@
 #pragma once
 
+// for btScalar
+
 extern "C" {
     float bw_sqrtf(float x);
 
@@ -70,4 +72,33 @@ inline float powf(float x, float y) {
 
 inline float fmodf(float x, float y) {
     return bw_fmodf(x, y);
+}
+
+// for xmmintrin.h
+
+extern "C" {
+    bool bw_isnan(double x);
+    bool bw_isinf(double x);
+
+    double bw_fabs(double x);
+}
+
+inline long int lrint(double x) {
+    return (long int)x;
+}
+
+inline long long int llrint(double x) {
+    return (long long int)x;
+}
+
+inline bool isinf(double x) {
+    return bw_isinf(x);
+}
+
+inline bool isnan(double x) {
+    return bw_isnan(x);
+}
+
+inline double fabs(double x) {
+    return bw_fabs(x);
 }
