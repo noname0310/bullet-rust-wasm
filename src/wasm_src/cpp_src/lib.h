@@ -11,9 +11,12 @@
 #define BT_USE_SSE
 #define BT_USE_SSE_IN_API
 #define BT_NO_SIMD_OPERATOR_OVERLOADS
+#define BT_USE_SIMD_VECTOR3
 
 #include <smmintrin.h>
+#include "LinearMath/btMinMax.h"
 #include "LinearMath/btScalar.h"
+#include "LinearMath/btVector3.h"
 
 extern "C" {
     extern void __wasm_call_ctors();

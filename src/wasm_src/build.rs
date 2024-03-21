@@ -16,7 +16,10 @@ fn main() {
         ])
         .files([
             "cpp_src/lib.h",
-            "cpp_src/LinearMath/btScalar.h"
+            "cpp_src/LinearMath/btMinMax.h",
+            "cpp_src/LinearMath/btScalar.h",
+            "cpp_src/LinearMath/btVector3.h",
+            "cpp_src/LinearMath/btVector3.cpp"
         ])
         .compile("bullet");
 
