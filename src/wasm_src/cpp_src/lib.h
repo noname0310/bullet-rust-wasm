@@ -27,5 +27,8 @@ extern "C" int bt_get_version() {
 }
 
 extern "C" float bt_sin(float x) {
+    const int* boxed = new int(3);
+    delete boxed;
+
     return btSin(x);
 }
