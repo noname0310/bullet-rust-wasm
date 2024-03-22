@@ -1,4 +1,5 @@
 mod math;
+mod allocator;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;
@@ -10,6 +11,12 @@ extern "C" {
     pub fn bt_get_version() -> i32;
 
     pub fn bt_sin(x: f32) -> f32;
+
+    pub fn bt_alloc_int() -> *mut i32;
+
+    pub fn bt_free_int(ptr: *mut i32);
+
+    pub fn bt_nonallocnew_test() -> *mut i32;
 }
 
 // #[no_mangle]
@@ -39,5 +46,13 @@ pub fn init() {
 
         let sin = bt_sin(1.0);
         console::log_1(&format!("sin(1.0): {}", sin).into());
+
+        let boxed_int = bt_alloc_int();
+        console::log_1(&format!("boxed_int: {:?}", *boxed_int).into());
+        bt_free_int(boxed_int);
+
+        let boxed_int = bt_nonallocnew_test();
+        console::log_1(&format!("boxed_int: {:?}", *boxed_int).into());
+        bt_free_int(boxed_int);
     }
 }
