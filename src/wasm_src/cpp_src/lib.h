@@ -1,4 +1,5 @@
 // for use simd instructions
+
 #define _WIN32
 #define _MSC_VER 1401
 #define __i386__
@@ -12,6 +13,8 @@
 #define BT_USE_SSE_IN_API
 #define BT_NO_SIMD_OPERATOR_OVERLOADS
 #define BT_USE_SIMD_VECTOR3
+
+//
 
 // for manual global memory initialization
 
