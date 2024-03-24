@@ -16,8 +16,15 @@ fn main() {
         ])
         .files([
             "cpp_src/lib.h",
+            "cpp_src/LinearMath/btAlignedAllocator.h",
+            "cpp_src/LinearMath/btAlignedAllocator.cpp",
+            "cpp_src/LinearMath/btAlignedObjectArray.h",
+            "cpp_src/LinearMath/btMatrix3x3.h",
             "cpp_src/LinearMath/btMinMax.h",
+            "cpp_src/LinearMath/btQuadWord.h",
+            "cpp_src/LinearMath/btQuaternion.h",
             "cpp_src/LinearMath/btScalar.h",
+            "cpp_src/LinearMath/btTransform.h",
             "cpp_src/LinearMath/btVector3.h",
             "cpp_src/LinearMath/btVector3.cpp"
         ])

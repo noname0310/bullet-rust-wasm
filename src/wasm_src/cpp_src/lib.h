@@ -28,19 +28,6 @@ extern "C" {
 
 #include <stdlib.h>
 
-extern "C" {
-    void* bw_malloc(size_t size);
-    void bw_free(void* ptr);
-}
-
-inline void* malloc(size_t size) noexcept {
-    return bw_malloc(size);
-}
-
-inline void free(void* ptr) noexcept {
-    bw_free(ptr);
-}
-
 void* operator new(size_t size) {
     return bw_malloc(size);
 }
@@ -84,6 +71,12 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "LinearMath/btMinMax.h"
 #include "LinearMath/btScalar.h"
 #include "LinearMath/btVector3.h"
+#include "LinearMath/btQuadWord.h"
+#include "LinearMath/btQuaternion.h"
+#include "LinearMath/btMatrix3x3.h"
+#include "LinearMath/btTransform.h"
+#include "LinearMath/btAlignedAllocator.h"
+#include "LinearMath/btAlignedObjectArray.h"
 
 // test extern functions
 
@@ -108,6 +101,19 @@ extern "C" int* bt_nonallocnew_test() {
 
 extern "C" void bt_free_int(int* ptr) {
     delete ptr;
+}
+
+extern "C" void bt_transform_test() {
+    btTransform t1;
+    btTransform t2;
+    btTransform t3 = t1 * t2;
+}
+
+extern "C" int bt_vector3_test() {
+    btVector3 v1(1, 2, 3);
+    btVector3 v2(4, 5, 6);
+    btVector3 v3 = v1 + v2;
+    return v3.x() + v3.y() + v3.z();
 }
 
 //

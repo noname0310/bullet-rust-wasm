@@ -6,17 +6,21 @@ use web_sys::console;
 
 #[link(name = "bullet")]
 extern "C" {
-    pub fn __wasm_call_ctors();
+    fn __wasm_call_ctors();
 
-    pub fn bt_get_version() -> i32;
+    fn bt_get_version() -> i32;
 
-    pub fn bt_sin(x: f32) -> f32;
+    fn bt_sin(x: f32) -> f32;
 
-    pub fn bt_alloc_int() -> *mut i32;
+    fn bt_alloc_int() -> *mut i32;
 
-    pub fn bt_free_int(ptr: *mut i32);
+    fn bt_free_int(ptr: *mut i32);
 
-    pub fn bt_nonallocnew_test() -> *mut i32;
+    fn bt_nonallocnew_test() -> *mut i32;
+
+    fn bt_transform_test();
+
+    fn bt_vector3_test() -> i32;
 }
 
 // #[no_mangle]
@@ -54,5 +58,10 @@ pub fn init() {
         let boxed_int = bt_nonallocnew_test();
         console::log_1(&format!("boxed_int: {:?}", *boxed_int).into());
         bt_free_int(boxed_int);
+
+        bt_transform_test();
+
+        let vector3_test = bt_vector3_test();
+        console::log_1(&format!("vector3_test: {}", vector3_test).into());
     }
 }
