@@ -27,21 +27,14 @@ extern "C" {
 // override allocation functions
 
 #include <stdlib.h>
+#include <new>
 
 void* operator new(size_t size) {
     return bw_malloc(size);
 }
 
-void* operator new(size_t size, void* ptr) noexcept {
-    return ptr;
-}
-
 void* operator new[](size_t size) {
     return bw_malloc(size);
-}
-
-void* operator new[](size_t size, void* ptr) noexcept {
-    return ptr;
 }
 
 void operator delete(void* ptr) noexcept {
@@ -77,6 +70,29 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "LinearMath/btTransform.h"
 #include "LinearMath/btAlignedAllocator.h"
 #include "LinearMath/btAlignedObjectArray.h"
+#include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h"
+#include "LinearMath/btMotionState.h"
+#include "LinearMath/btHashMap.h"
+#include "LinearMath/btSerializer.h"
+#include "BulletCollision/CollisionDispatch/btCollisionObject.h"
+#include "BulletCollision/CollisionShapes/btCollisionShape.h"
+#include "BulletCollision/CollisionShapes/btCollisionMargin.h"
+#include "LinearMath/btConvexHullComputer.h"
+#include "LinearMath/btGeometryUtil.h"
+#include "LinearMath/btGrahamScan2dConvexHull.h"
+#include "BulletCollision/CollisionShapes/btConvexPolyhedron.h"
+#include "LinearMath/btAabbUtil2.h"
+#include "BulletCollision/CollisionShapes/btConvexInternalShape.h"
+#include "BulletCollision/CollisionShapes/btPolyhedralConvexShape.h"
+#include "BulletCollision/CollisionShapes/btBoxShape.h"
+#include "BulletCollision/CollisionShapes/btTriangleShape.h"
+#include "BulletCollision/CollisionShapes/btSphereShape.h"
+#include "BulletCollision/CollisionShapes/btCylinderShape.h"
+#include "BulletCollision/CollisionShapes/btConeShape.h"
+#include "BulletCollision/CollisionShapes/btCapsuleShape.h"
+#include "BulletCollision/CollisionShapes/btConvexHullShape.h"
+#include "BulletCollision/CollisionShapes/btConvexPointCloudShape.h"
+#include "BulletCollision/CollisionShapes/btConvexShape.h"
 
 // test extern functions
 

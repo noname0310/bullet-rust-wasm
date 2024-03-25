@@ -6,6 +6,8 @@ typedef unsigned long long size_t;
 typedef unsigned long size_t;
 #endif
 
+#define NULL nullptr
+
 extern "C" {
     void* bw_malloc(size_t size);
     void bw_free(void* ptr);

@@ -91,3 +91,29 @@ void *memset(void *dest, int c, size_t n)
 
 	return dest;
 }
+
+void *memcpy(void *dest, const void *src, size_t n)
+{
+	unsigned char *d = static_cast<unsigned char *>(dest);
+	const unsigned char *s = static_cast<const unsigned char *>(src);
+
+	/* Simple, byte oriented memcpy. */
+	while (n--) *d++ = *s++;
+	return dest;
+}
+
+int strncmp(const char *s1, const char *s2, size_t n)
+{
+	unsigned char u1, u2;
+
+	while (n-- > 0)
+	{
+		u1 = (unsigned char)*s1++;
+		u2 = (unsigned char)*s2++;
+		if (u1 != u2)
+			return u1 - u2;
+		if (u1 == '\0')
+			return 0;
+	}
+	return 0;
+}

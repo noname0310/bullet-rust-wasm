@@ -12,21 +12,60 @@ fn main() {
         .flag("-Wno-deprecated-declarations")
         .flag("-Wno-#pragma-messages")
         .includes([
-            "cpp_wasm_std"
+            "cpp_wasm_std",
+            "cpp_src"
         ])
         .files([
             "cpp_src/lib.h",
+            "cpp_src/BulletCollision/BroadphaseCollision/btBroadphaseProxy.h",
+            "cpp_src/BulletCollision/BroadphaseCollision/btBroadphaseProxy.cpp",
+            "cpp_src/BulletCollision/CollisionDispatch/btCollisionObject.h",
+            "cpp_src/BulletCollision/CollisionDispatch/btCollisionObject.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btBoxShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btBoxShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btCapsuleShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btCapsuleShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btCollisionMargin.h",
+            "cpp_src/BulletCollision/CollisionShapes/btCollisionShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btCollisionShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConeShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btConeShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexHullShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexHullShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexInternalShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexInternalShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexPointCloudShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexPointCloudShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexPolyhedron.h",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexPolyhedron.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btCylinderShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btCylinderShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btPolyhedralConvexShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btPolyhedralConvexShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btSphereShape.h",
+            "cpp_src/BulletCollision/CollisionShapes/btSphereShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btTriangleShape.h",
+            "cpp_src/LinearMath/btAabbUtil2.h",
             "cpp_src/LinearMath/btAlignedAllocator.h",
             "cpp_src/LinearMath/btAlignedAllocator.cpp",
             "cpp_src/LinearMath/btAlignedObjectArray.h",
+            "cpp_src/LinearMath/btConvexHullComputer.h",
+            "cpp_src/LinearMath/btConvexHullComputer.cpp",
+            "cpp_src/LinearMath/btGeometryUtil.h",
+            "cpp_src/LinearMath/btGeometryUtil.cpp",
+            "cpp_src/LinearMath/btGrahamScan2dConvexHull.h",
+            "cpp_src/LinearMath/btHashMap.h",
             "cpp_src/LinearMath/btMatrix3x3.h",
             "cpp_src/LinearMath/btMinMax.h",
+            "cpp_src/LinearMath/btMotionState.h",
             "cpp_src/LinearMath/btQuadWord.h",
             "cpp_src/LinearMath/btQuaternion.h",
             "cpp_src/LinearMath/btScalar.h",
+            "cpp_src/LinearMath/btSerializer.h",
+            "cpp_src/LinearMath/btSerializer.cpp",
             "cpp_src/LinearMath/btTransform.h",
             "cpp_src/LinearMath/btVector3.h",
-            "cpp_src/LinearMath/btVector3.cpp"
+            "cpp_src/LinearMath/btVector3.cpp",
         ])
         .compile("bullet");
 
