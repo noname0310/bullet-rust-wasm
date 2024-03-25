@@ -71,5 +71,4 @@ fn main() {
 
     println!("cargo:rerun-if-changed=cpp_wasm_std");
     println!("cargo:rerun-if-changed=cpp_src/lib.h");
-    println!("cargo:rerun-if-changed=cpp_src/LinearMath/btScalar.h");
 }
