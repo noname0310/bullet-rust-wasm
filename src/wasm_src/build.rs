@@ -11,6 +11,21 @@ fn main() {
         .flag("-Wno-c++11-narrowing")
         .flag("-Wno-deprecated-declarations")
         .flag("-Wno-#pragma-messages")
+
+        // for use simd instructions
+        .define("_WIN32", None)
+        .define("_MSC_VER", "1401")
+        .define("__i386__", None)
+        .define("__SSE__", None)
+        .define("__SSE2__", None)
+        .define("__SSE3__", None)
+        .define("__SSSE3__", None)
+        .define("__SSE4_1__", None)
+        .define("BT_USE_SSE", None)
+        // .define("BT_USE_SSE_IN_API", None)
+        .define("BT_NO_SIMD_OPERATOR_OVERLOADS", None)
+        .define("BT_USE_SIMD_VECTOR3", None)
+        
         .includes([
             "cpp_wasm_std",
             "cpp_src"
@@ -67,9 +82,13 @@ fn main() {
             "cpp_src/LinearMath/btMotionState.h",
             "cpp_src/LinearMath/btQuadWord.h",
             "cpp_src/LinearMath/btQuaternion.h",
+            "cpp_src/LinearMath/btQuickprof.h",
+            "cpp_src/LinearMath/btQuickprof.cpp",
             "cpp_src/LinearMath/btScalar.h",
             "cpp_src/LinearMath/btSerializer.h",
             "cpp_src/LinearMath/btSerializer.cpp",
+            "cpp_src/LinearMath/btThreads.h",
+            "cpp_src/LinearMath/btThreads.cpp",
             "cpp_src/LinearMath/btTransform.h",
             "cpp_src/LinearMath/btTransformUtil.h",
             "cpp_src/LinearMath/btVector3.h",

@@ -102,3 +102,9 @@ inline bool isnan(double x) {
 inline double fabs(double x) {
     return bw_fabs(x);
 }
+
+// for use SIMD instructions
+
+#include <smmintrin.h>
+
+//

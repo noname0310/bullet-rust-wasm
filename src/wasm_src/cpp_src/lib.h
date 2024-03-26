@@ -1,21 +1,3 @@
-// for use simd instructions
-
-#define _WIN32
-#define _MSC_VER 1401
-#define __i386__
-#define __SSE__
-#define __SSE2__
-#define __SSE3__
-#define __SSSE3__
-#define __SSE4_1__
-
-#define BT_USE_SSE
-#define BT_USE_SSE_IN_API
-#define BT_NO_SIMD_OPERATOR_OVERLOADS
-#define BT_USE_SIMD_VECTOR3
-
-//
-
 // for manual global memory initialization
 
 extern "C" {
@@ -52,12 +34,6 @@ void operator delete[](void* ptr) noexcept {
 void operator delete[](void* ptr, size_t size) noexcept {
     bw_free(ptr);
 }
-
-//
-
-// for use SIMD instructions
-
-#include <smmintrin.h>
 
 //
 
@@ -99,6 +75,7 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletDynamics/ConstraintSolver/btSolverConstraint.h"
 #include "BulletDynamics/ConstraintSolver/btTypedConstraint.h"
 #include "BulletDynamics/Dynamics/btRigidBody.h"
+#include "LinearMath/btThreads.h"
 
 // test extern functions
 
