@@ -93,6 +93,12 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletCollision/CollisionShapes/btConvexHullShape.h"
 #include "BulletCollision/CollisionShapes/btConvexPointCloudShape.h"
 #include "BulletCollision/CollisionShapes/btConvexShape.h"
+#include "LinearMath/btTransformUtil.h"
+#include "BulletDynamics/ConstraintSolver/btSolverBody.h"
+#include "BulletDynamics/ConstraintSolver/btJacobianEntry.h"
+#include "BulletDynamics/ConstraintSolver/btSolverConstraint.h"
+#include "BulletDynamics/ConstraintSolver/btTypedConstraint.h"
+#include "BulletDynamics/Dynamics/btRigidBody.h"
 
 // test extern functions
 
