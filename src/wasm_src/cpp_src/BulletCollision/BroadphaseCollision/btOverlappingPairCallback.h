@@ -19,6 +19,7 @@ subject to the following restrictions:
 
 class btDispatcher;
 struct btBroadphasePair;
+struct btBroadphaseProxy;
 
 ///The btOverlappingPairCallback class is an additional optional broadphase user callback for adding/removing overlapping pairs, similar interface to btOverlappingPairCache.
 class btOverlappingPairCallback

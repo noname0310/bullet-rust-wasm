@@ -76,6 +76,14 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletDynamics/ConstraintSolver/btTypedConstraint.h"
 #include "BulletDynamics/Dynamics/btRigidBody.h"
 #include "LinearMath/btThreads.h"
+#include "BulletCollision/BroadphaseCollision/btBroadphaseInterface.h"
+#include "BulletCollision/BroadphaseCollision/btDbvt.h"
+#include "BulletCollision/BroadphaseCollision/btOverlappingPairCallback.h"
+#include "BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h"
+#include "BulletCollision/BroadphaseCollision/btDispatcher.h"
+#include "BulletCollision/BroadphaseCollision/btOverlappingPairCache.h"
+#include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h"
+#include "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
 
 // test extern functions
 
@@ -113,6 +121,15 @@ extern "C" int bt_vector3_test() {
     btVector3 v2(4, 5, 6);
     btVector3 v3 = v1 + v2;
     return v3.x() + v3.y() + v3.z();
+}
+
+extern "C" void* bt_create_dbvtbroadphase() {
+    btDbvtBroadphase* broadphase = new btDbvtBroadphase();
+    return broadphase;
+}
+
+extern "C" void bt_delete_dbvtbroadphase(btDbvtBroadphase* broadphase) {
+    delete broadphase;
 }
 
 //

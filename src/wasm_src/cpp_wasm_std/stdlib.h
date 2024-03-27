@@ -20,3 +20,7 @@ inline void* malloc(size_t size) noexcept {
 inline void free(void* ptr) noexcept {
     bw_free(ptr);
 }
+
+// for btDbvt
+
+#define __int32 int

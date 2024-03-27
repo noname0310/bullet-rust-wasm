@@ -21,6 +21,10 @@ extern "C" {
     fn bt_transform_test();
 
     fn bt_vector3_test() -> i32;
+
+    fn bt_create_dvbtbroaphase() -> *mut core::ffi::c_void;
+
+    fn bt_delete_dbvtbroadphase(ptr: *mut core::ffi::c_void);
 }
 
 // #[no_mangle]
@@ -63,5 +67,8 @@ pub fn init() {
 
         let vector3_test = bt_vector3_test();
         console::log_1(&format!("vector3_test: {}", vector3_test).into());
+
+        let dbvtbroadphase = bt_create_dvbtbroaphase();
+        bt_delete_dbvtbroadphase(dbvtbroadphase);
     }
 }
