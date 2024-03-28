@@ -1,5 +1,6 @@
 mod math;
 mod allocator;
+mod error_handler;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;
@@ -22,23 +23,10 @@ extern "C" {
 
     fn bt_vector3_test() -> i32;
 
-    fn bt_create_dbvtbroadphase() -> *mut i32;
+    fn bt_create_dbvtbroadphase() -> *mut core::ffi::c_void;
 
-    fn bt_delete_dbvtbroadphase(ptr: *mut i32);
+    fn bt_delete_dbvtbroadphase(ptr: *mut core::ffi::c_void);
 }
-
-// #[no_mangle]
-// unsafe extern "C" fn alloc(size: usize) -> *mut u8 {
-//     let mut buf = Vec::with_capacity(size);
-//     let ptr = buf.as_mut_ptr();
-//     std::mem::forget(buf);
-//     ptr
-// }
-
-// #[no_mangle]
-// unsafe extern "C" fn dealloc(ptr: *mut u8, size: usize) {
-//     let _buf = Vec::from_raw_parts(ptr, 0, size);
-// }
 
 #[wasm_bindgen(js_name = init)]
 pub fn init() {
