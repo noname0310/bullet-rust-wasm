@@ -82,7 +82,6 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h"
 #include "BulletCollision/BroadphaseCollision/btDispatcher.h"
 #include "BulletCollision/BroadphaseCollision/btOverlappingPairCache.h"
-#include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h"
 #include "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
 
 // test extern functions
@@ -123,12 +122,12 @@ extern "C" int bt_vector3_test() {
     return v3.x() + v3.y() + v3.z();
 }
 
-extern "C" void* bt_create_dbvtbroadphase() {
-    btDbvtBroadphase* broadphase = new btDbvtBroadphase();
-    return broadphase;
+extern "C" int* bt_create_dbvtbroadphase() {
+    int* broadphase = reinterpret_cast<int*>(new btTransform());
+    return reinterpret_cast<int*>(broadphase);
 }
 
-extern "C" void bt_delete_dbvtbroadphase(btDbvtBroadphase* broadphase) {
+extern "C" void bt_delete_dbvtbroadphase(int* broadphase) {
     delete broadphase;
 }
 

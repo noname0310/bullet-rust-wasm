@@ -27,18 +27,10 @@ typedef union _LARGE_INTEGER {
 
 // time related functions is only used in profiling, so we can just return 0
 
-BOOL QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount){
-    return 0;
-}
+BOOL QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount);
 
-BOOL QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency){
-    return 0;
-}
+BOOL QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency);
 
-DWORD GetTickCount(VOID) {
-    return 0;
-}
+DWORD GetTickCount(VOID);
 
-ULONGLONG GetTickCount64(VOID) {
-    return 0;
-}
+ULONGLONG GetTickCount64(VOID);

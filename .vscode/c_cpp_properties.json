@@ -7,7 +7,19 @@
                 "src/wasm_src/cpp_src/"
             ],
             "defines": [
-                "_DEBUG"
+                "_DEBUG",
+                "__GNUC__",
+                "_WIN32",
+                "_MSC_VER=1401",
+                "__i386__",
+                "__SSE__",
+                "__SSE2__",
+                "__SSE3__",
+                "__SSSE3__",
+                "__SSE4_1__",
+                "BT_USE_SSE",
+                "BT_NO_SIMD_OPERATOR_OVERLOADS",
+                "BT_USE_SIMD_VECTOR3"
             ],
             "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/bin/clang.exe",
             "compilerArgs": [
