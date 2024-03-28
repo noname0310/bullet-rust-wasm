@@ -154,11 +154,63 @@ extern "C" void bt_link_test() {
 
     btRigidBody body1(0, 0, 0);
 
+    class Dispatcher : public btDispatcher {
+        btCollisionAlgorithm* findAlgorithm(const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, btPersistentManifold* sharedManifold, ebtDispatcherQueryType queryType) {
+            return nullptr;
+        }
+        btPersistentManifold* getNewManifold(const btCollisionObject* b0, const btCollisionObject* b1) {
+            return nullptr;
+        }
+        void releaseManifold(btPersistentManifold* manifold) {}
+        void clearManifold(btPersistentManifold* manifold) {}
+        bool needsCollision(const btCollisionObject* body0, const btCollisionObject* body1) {
+            return false;
+        }
+        bool needsResponse(const btCollisionObject* body0, const btCollisionObject* body1) {
+            return false;
+        }
+        void dispatchAllCollisionPairs(btOverlappingPairCache* pairCache, const btDispatcherInfo& dispatchInfo, btDispatcher* dispatcher) {}
+        int getNumManifolds() const {
+            return 0;
+        }
+        btPersistentManifold* getManifoldByIndexInternal(int index) {
+            return nullptr;
+        }
+
+        btPersistentManifold** getInternalManifoldPointer() {
+            return nullptr;
+        }
+
+        btPoolAllocator* getInternalManifoldPool() {
+            return nullptr;
+        }
+
+        const btPoolAllocator* getInternalManifoldPool() const {
+            return nullptr;
+        }
+
+        void* allocateCollisionAlgorithm(int size) {
+            return nullptr;
+        }
+
+        void freeCollisionAlgorithm(void* algo) {}
+    };
+
     btPersistentManifold manifold;
-    btCollisionAlgorithmConstructionInfo info(nullptr, 0);
-    btConvexConvexAlgorithm algorithm(&manifold, info, nullptr, nullptr, nullptr, 0, 0);
-    btEmptyAlgorithm empty_algorithm(info);
-    btConvexConcaveCollisionAlgorithm concave_algorithm(info, nullptr, nullptr, false);
+    
+    Dispatcher dispatcher1;
+    btCollisionAlgorithmConstructionInfo info1(&dispatcher1, 0);
+    btCollisionObjectWrapper wrapper1(nullptr, &shape1, &body1, btTransform::getIdentity(), 0, 0);
+    btCollisionObjectWrapper wrapper2(nullptr, &shape2, &body1, btTransform::getIdentity(), 0, 0);
+    btConvexConvexAlgorithm algorithm(&manifold, info1, nullptr, nullptr, nullptr, 0, 0);
+    
+    Dispatcher dispatcher2;
+    btCollisionAlgorithmConstructionInfo info2(&dispatcher2, 0);
+    btEmptyAlgorithm empty_algorithm(info2);
+
+    Dispatcher dispatcher3;
+    btCollisionAlgorithmConstructionInfo info3(&dispatcher3, 0);
+    btConvexConcaveCollisionAlgorithm concave_algorithm(info3, &wrapper1, &wrapper2, false);
     btMiniSDF sdf;
     double s;
     btVector3 v;

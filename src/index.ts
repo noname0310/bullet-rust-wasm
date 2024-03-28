@@ -1,4 +1,6 @@
-import * as wasm from "./wasm/index";
+import * as wasmBindgen from "./wasm/index";
 
-const wasmInstance = await wasm.default();
-wasmInstance.init();
+await wasmBindgen.default();
+wasmBindgen.init();
+await wasmBindgen.initThreadPool(2);
+wasmBindgen.test();

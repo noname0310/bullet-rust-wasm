@@ -1,9 +1,13 @@
 mod math;
 mod allocator;
 mod error_handler;
+mod guard;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;
+use rayon::prelude::*;
+
+pub use wasm_bindgen_rayon::init_thread_pool;
 
 #[link(name = "bullet")]
 extern "C" {
@@ -41,7 +45,10 @@ pub fn init() {
     }
 
     console_error_panic_hook::set_once();
+}
 
+#[wasm_bindgen(js_name = test)]
+pub fn test() {
     unsafe {
         let version = bt_get_version();
         console::log_1(&format!("Bullet version: {}", version).into());
@@ -69,5 +76,11 @@ pub fn init() {
         bt_delete_rigidbody(rigidbody);
 
         bt_link_test();
+
+        for _ in 0..10 {
+            rayon::spawn(move || {
+                bt_link_test();
+            });
+        }
     }
 }
