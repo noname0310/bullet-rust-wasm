@@ -26,6 +26,10 @@ extern "C" {
     fn bt_create_dbvtbroadphase() -> *mut core::ffi::c_void;
 
     fn bt_delete_dbvtbroadphase(ptr: *mut core::ffi::c_void);
+
+    fn bt_create_rigidbody() -> *mut core::ffi::c_void;
+
+    fn bt_delete_rigidbody(ptr: *mut core::ffi::c_void);
 }
 
 #[wasm_bindgen(js_name = init)]
@@ -58,5 +62,8 @@ pub fn init() {
 
         let dbvtbroadphase = bt_create_dbvtbroadphase();
         bt_delete_dbvtbroadphase(dbvtbroadphase);
+
+        let rigidbody = bt_create_rigidbody();
+        bt_delete_rigidbody(rigidbody);
     }
 }

@@ -131,4 +131,14 @@ extern "C" void bt_delete_dbvtbroadphase(void* broadphase) {
     delete static_cast<btDbvtBroadphase*>(broadphase);
 }
 
+extern "C" void* bt_create_rigidbody() {
+    btRigidBody::btRigidBodyConstructionInfo info(0, 0, 0);
+    btRigidBody* body = new btRigidBody(info);
+    return body;
+}
+
+extern "C" void bt_delete_rigidbody(void* body) {
+    delete static_cast<btRigidBody*>(body);
+}
+
 //
