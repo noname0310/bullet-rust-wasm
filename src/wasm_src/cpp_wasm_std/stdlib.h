@@ -6,6 +6,14 @@ typedef unsigned long long size_t;
 typedef unsigned long size_t;
 #endif
 
+// for btMiniSDF
+
+namespace std {
+    typedef size_t size_t;
+}
+
+//
+
 #define NULL nullptr
 
 extern "C" {
@@ -24,3 +32,5 @@ inline void free(void* ptr) noexcept {
 // for btDbvt
 
 #define __int32 int
+
+//
