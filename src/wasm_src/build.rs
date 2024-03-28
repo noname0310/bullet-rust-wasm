@@ -11,6 +11,7 @@ fn main() {
         .flag("-Wno-c++11-narrowing")
         .flag("-Wno-deprecated-declarations")
         .flag("-Wno-#pragma-messages")
+        .flag("-fno-exceptions")
 
         // for use simd instructions
         .define("_WIN32", None)
@@ -32,6 +33,7 @@ fn main() {
         ])
         .files([
             "cpp_src/lib.cpp",
+            "cpp_wasm_std/stdio.cpp",
             "cpp_wasm_std/string_c.cpp",
             "cpp_wasm_std/string.cpp",
             "cpp_wasm_std/windows.cpp",
@@ -41,18 +43,38 @@ fn main() {
             "cpp_src/BulletCollision/BroadphaseCollision/btDbvtBroadphase.cpp",
             "cpp_src/BulletCollision/BroadphaseCollision/btDispatcher.cpp",
             "cpp_src/BulletCollision/BroadphaseCollision/btOverlappingPairCache.cpp",
+            "cpp_src/BulletCollision/CollisionDispatch/btActivatingCollisionAlgorithm.cpp",
+            "cpp_src/BulletCollision/CollisionDispatch/btCollisionDispatcher.cpp",
             "cpp_src/BulletCollision/CollisionDispatch/btCollisionObject.cpp",
+            "cpp_src/BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.cpp",
+            "cpp_src/BulletCollision/CollisionDispatch/btManifoldResult.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btBoxShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btCapsuleShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btCollisionShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConcaveShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btConeShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btConvexHullShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btConvexInternalShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btConvexPointCloudShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btConvexPolyhedron.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btConvexShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btCylinderShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btMinkowskiSumShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btPolyhedralConvexShape.cpp",
             "cpp_src/BulletCollision/CollisionShapes/btSphereShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btStaticPlaneShape.cpp",
+            "cpp_src/BulletCollision/CollisionShapes/btTriangleCallback.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btContinuousConvexCollision.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btConvexCast.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btGjkConvexCast.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btGjkEpa2.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btGjkEpaPenetrationDepthSolver.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btGjkPairDetector.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btMinkowskiPenetrationDepthSolver.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btPersistentManifold.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btPolyhedralContactClipping.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btSubSimplexConvexCast.cpp",
+            "cpp_src/BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.cpp",
             "cpp_src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp",
             "cpp_src/BulletDynamics/Dynamics/btRigidBody.cpp",
             "cpp_src/LinearMath/btAlignedAllocator.cpp",

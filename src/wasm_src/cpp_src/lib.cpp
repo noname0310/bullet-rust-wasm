@@ -83,6 +83,9 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletCollision/BroadphaseCollision/btDispatcher.h"
 #include "BulletCollision/BroadphaseCollision/btOverlappingPairCache.h"
 #include "BulletCollision/BroadphaseCollision/btDbvtBroadphase.h"
+#include "BulletCollision/CollisionDispatch/btActivatingCollisionAlgorithm.h"
+#include "BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h"
+#include "BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.h"
 
 // test extern functions
 
@@ -139,6 +142,18 @@ extern "C" void* bt_create_rigidbody() {
 
 extern "C" void bt_delete_rigidbody(void* body) {
     delete static_cast<btRigidBody*>(body);
+}
+
+extern "C" void bt_link_test() {
+    btSphereShape shape1(1);
+    btSphereShape shape2(1);
+    btGjkPairDetector detector(&shape1, &shape2, 0, 0);
+
+    btRigidBody body1(0, 0, 0);
+
+    btPersistentManifold manifold;
+    btCollisionAlgorithmConstructionInfo info(nullptr, 0);
+    btConvexConvexAlgorithm algorithm(&manifold, info, nullptr, nullptr, nullptr, 0, 0);
 }
 
 //

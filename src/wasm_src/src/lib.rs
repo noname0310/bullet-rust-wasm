@@ -30,6 +30,8 @@ extern "C" {
     fn bt_create_rigidbody() -> *mut core::ffi::c_void;
 
     fn bt_delete_rigidbody(ptr: *mut core::ffi::c_void);
+
+    fn bt_link_test();
 }
 
 #[wasm_bindgen(js_name = init)]
@@ -65,5 +67,7 @@ pub fn init() {
 
         let rigidbody = bt_create_rigidbody();
         bt_delete_rigidbody(rigidbody);
+
+        bt_link_test();
     }
 }
