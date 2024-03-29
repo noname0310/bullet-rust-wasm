@@ -19,7 +19,8 @@
                 "__SSE4_1__",
                 "BT_USE_SSE",
                 "BT_NO_SIMD_OPERATOR_OVERLOADS",
-                "BT_USE_SIMD_VECTOR3"
+                "BT_USE_SIMD_VECTOR3",
+                "__wasm32__"
             ],
             "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/bin/clang.exe",
             "compilerArgs": [

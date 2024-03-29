@@ -26,6 +26,7 @@ fn main() {
         // .define("BT_USE_SSE_IN_API", None)
         .define("BT_NO_SIMD_OPERATOR_OVERLOADS", None)
         .define("BT_USE_SIMD_VECTOR3", None)
+        .define("__wasm32__", None)
         
         .includes([
             "cpp_wasm_std",
@@ -33,6 +34,7 @@ fn main() {
         ])
         .files([
             "cpp_src/lib.cpp",
+            "cpp_wasm_std/cxa_guard.cpp",
             "cpp_wasm_std/stdio.cpp",
             "cpp_wasm_std/string_c.cpp",
             "cpp_wasm_std/string.cpp",
