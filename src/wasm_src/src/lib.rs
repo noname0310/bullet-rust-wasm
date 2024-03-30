@@ -1,7 +1,7 @@
 mod math;
 mod allocator;
 mod error_handler;
-mod guard;
+mod atomic;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;

@@ -153,20 +153,13 @@ private:
 //                       PlatformGetThreadID
 //===----------------------------------------------------------------------===//
 
-#if defined(__APPLE__) && defined(_LIBCPP_HAS_THREAD_API_PTHREAD)
-uint32_t PlatformThreadID() {
-  static_assert(sizeof(mach_port_t) == sizeof(uint32_t), "");
-  return static_cast<uint32_t>(pthread_mach_thread_np(std::__libcpp_thread_get_current_id()));
+extern "C" {
+  uint32_t bw_get_thread_id();
 }
-#elif defined(SYS_gettid) && defined(_LIBCPP_HAS_THREAD_API_PTHREAD)
-uint32_t PlatformThreadID() {
-  static_assert(sizeof(pid_t) == sizeof(uint32_t), "");
-  return static_cast<uint32_t>(syscall(SYS_gettid));
-}
-#else
-constexpr uint32_t (*PlatformThreadID)() = nullptr;
-#endif
 
+uint32_t PlatformThreadID() {
+  return bw_get_thread_id();
+}
 //===----------------------------------------------------------------------===//
 //                          GuardByte
 //===----------------------------------------------------------------------===//

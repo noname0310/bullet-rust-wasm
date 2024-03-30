@@ -5,6 +5,7 @@
     "C_Cpp.errorSquiggles": "enabled",
     "files.associations": {
         "string": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "__config": "cpp"
     }
 }
