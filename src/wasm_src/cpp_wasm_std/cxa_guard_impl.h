@@ -56,9 +56,7 @@
 #endif
 
 #include <__threading_support>
-#include <cstdint>
-#include <cstring>
-#include <limits.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #if defined(__clang__)
@@ -69,33 +67,8 @@
 #  pragma GCC diagnostic ignored "-Waddress"
 #endif
 
-// To make testing possible, this header is included from both cxa_guard.cpp
-// and a number of tests.
-//
-// For this reason we place everything in an anonymous namespace -- even though
-// we're in a header. We want the actual implementation and the tests to have
-// unique definitions of the types in this header (since the tests may depend
-// on function local statics).
-//
-// To enforce this either `BUILDING_CXA_GUARD` or `TESTING_CXA_GUARD` must be
-// defined when including this file. Only `src/cxa_guard.cpp` should define
-// the former.
-#ifdef BUILDING_CXA_GUARD
-#  include "abort_message.h"
-#  define ABORT_WITH_MESSAGE(...) ::abort_message(__VA_ARGS__)
-#elif defined(TESTING_CXA_GUARD)
-#  define ABORT_WITH_MESSAGE(...) ::abort()
-#else
-#  error "Either BUILDING_CXA_GUARD or TESTING_CXA_GUARD must be defined"
-#endif
-
-#if __has_feature(thread_sanitizer)
-extern "C" void __tsan_acquire(void*);
-extern "C" void __tsan_release(void*);
-#else
-#  define __tsan_acquire(addr) ((void)0)
-#  define __tsan_release(addr) ((void)0)
-#endif
+// we don't need to implement ABORT_WITH_MESSAGE because there is no case where recursive initialization is detected
+#define ABORT_WITH_MESSAGE(...)
 
 namespace __cxxabiv1 {
 // Use an anonymous namespace to ensure that the tests and actual implementation

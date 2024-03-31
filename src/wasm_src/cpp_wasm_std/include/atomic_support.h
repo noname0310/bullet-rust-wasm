@@ -10,7 +10,7 @@
 #define ATOMIC_SUPPORT_H
 
 #include <__config>
-#include <memory> // for __libcpp_relaxed_load
+// #include <memory> // for __libcpp_relaxed_load
 
 #if defined(__clang__) && __has_builtin(__atomic_load_n)             \
                        && __has_builtin(__atomic_store_n)            \

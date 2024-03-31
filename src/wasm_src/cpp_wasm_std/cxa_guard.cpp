@@ -9,9 +9,6 @@
 #include "__cxxabi_config.h"
 #include "cxxabi.h"
 
-// Tell the implementation that we're building the actual implementation
-// (and not testing it)
-#define BUILDING_CXA_GUARD
 #include "cxa_guard_impl.h"
 
 /*
