@@ -6,6 +6,9 @@
     "files.associations": {
         "string": "cpp",
         "new": "cpp",
-        "__config": "cpp"
+        "__config": "cpp",
+        "__threading_support": "cpp",
+        "__config_site": "cpp",
+        "memory": "cpp"
     }
 }
