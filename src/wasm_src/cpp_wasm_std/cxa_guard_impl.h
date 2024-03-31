@@ -61,12 +61,6 @@
 #include <limits.h>
 #include <stdlib.h>
 
-#ifndef _LIBCXXABI_HAS_NO_THREADS
-#  if defined(__ELF__) && defined(_LIBCXXABI_LINK_PTHREAD_LIB)
-#    pragma comment(lib, "pthread")
-#  endif
-#endif
-
 #if defined(__clang__)
 #  pragma clang diagnostic push
 #  pragma clang diagnostic ignored "-Wtautological-pointer-compare"
@@ -154,12 +148,13 @@ private:
 //===----------------------------------------------------------------------===//
 
 extern "C" {
-  uint32_t bw_get_thread_id();
+  uintptr_t bw_get_thread_id();
 }
 
 uint32_t PlatformThreadID() {
   return bw_get_thread_id();
 }
+
 //===----------------------------------------------------------------------===//
 //                          GuardByte
 //===----------------------------------------------------------------------===//
@@ -401,133 +396,6 @@ private:
 };
 
 //===----------------------------------------------------------------------===//
-//                         Futex Implementation
-//===----------------------------------------------------------------------===//
-
-#if defined(SYS_futex)
-void PlatformFutexWait(int* addr, int expect) {
-  constexpr int WAIT = 0;
-  syscall(SYS_futex, addr, WAIT, expect, 0);
-  __tsan_acquire(addr);
-}
-void PlatformFutexWake(int* addr) {
-  constexpr int WAKE = 1;
-  __tsan_release(addr);
-  syscall(SYS_futex, addr, WAKE, INT_MAX);
-}
-#else
-constexpr void (*PlatformFutexWait)(int*, int) = nullptr;
-constexpr void (*PlatformFutexWake)(int*) = nullptr;
-#endif
-
-constexpr bool PlatformSupportsFutex() { return +PlatformFutexWait != nullptr; }
-
-/// InitByteFutex - Uses a futex to manage reads and writes to the init byte.
-template <void (*Wait)(int*, int) = PlatformFutexWait, void (*Wake)(int*) = PlatformFutexWake,
-          uint32_t (*GetThreadIDArg)() = PlatformThreadID>
-struct InitByteFutex {
-
-  explicit InitByteFutex(uint8_t* _init_byte_address, uint32_t* _thread_id_address)
-      : init_byte(_init_byte_address),
-        has_thread_id_support(_thread_id_address != nullptr && GetThreadIDArg != nullptr),
-        thread_id(_thread_id_address),
-        base_address(reinterpret_cast<int*>(/*_init_byte_address & ~0x3*/ _init_byte_address - 1)) {}
-
-public:
-  /// The init byte portion of cxa_guard_acquire. Returns true if
-  /// initialization has already been completed.
-  bool acquire() {
-    while (true) {
-      uint8_t last_val = UNSET;
-      if (init_byte.compare_exchange(&last_val, PENDING_BIT, std::_AO_Acq_Rel, std::_AO_Acquire)) {
-        if (has_thread_id_support) {
-          thread_id.store(current_thread_id.get(), std::_AO_Relaxed);
-        }
-        return false;
-      }
-
-      if (last_val == COMPLETE_BIT)
-        return true;
-
-      if (last_val & PENDING_BIT) {
-
-        // Check for recursive initialization
-        if (has_thread_id_support && thread_id.load(std::_AO_Relaxed) == current_thread_id.get()) {
-          ABORT_WITH_MESSAGE("__cxa_guard_acquire detected recursive initialization: do you have a function-local static variable whose initialization depends on that function?");
-        }
-
-        if ((last_val & WAITING_BIT) == 0) {
-          // This compare exchange can fail for several reasons
-          // (1) another thread finished the whole thing before we got here
-          // (2) another thread set the waiting bit we were trying to thread
-          // (3) another thread had an exception and failed to finish
-          if (!init_byte.compare_exchange(&last_val, PENDING_BIT | WAITING_BIT, std::_AO_Acq_Rel, std::_AO_Release)) {
-            // (1) success, via someone else's work!
-            if (last_val == COMPLETE_BIT)
-              return true;
-
-            // (3) someone else, bailed on doing the work, retry from the start!
-            if (last_val == UNSET)
-              continue;
-
-            // (2) the waiting bit got set, so we are happy to keep waiting
-          }
-        }
-        wait_on_initialization();
-      }
-    }
-  }
-
-  /// The init byte portion of cxa_guard_release.
-  void release() {
-    uint8_t old = init_byte.exchange(COMPLETE_BIT, std::_AO_Acq_Rel);
-    if (old & WAITING_BIT)
-      wake_all();
-  }
-
-  /// The init byte portion of cxa_guard_abort.
-  void abort() {
-    if (has_thread_id_support)
-      thread_id.store(0, std::_AO_Relaxed);
-
-    uint8_t old = init_byte.exchange(UNSET, std::_AO_Acq_Rel);
-    if (old & WAITING_BIT)
-      wake_all();
-  }
-
-private:
-  /// Use the futex to wait on the current guard variable. Futex expects a
-  /// 32-bit 4-byte aligned address as the first argument, so we use the 4-byte
-  /// aligned address that encompasses the init byte (i.e. the address of the
-  /// raw guard object that was passed to __cxa_guard_acquire/release/abort).
-  void wait_on_initialization() { Wait(base_address, expected_value_for_futex(PENDING_BIT | WAITING_BIT)); }
-  void wake_all() { Wake(base_address); }
-
-private:
-  AtomicInt<uint8_t> init_byte;
-
-  const bool has_thread_id_support;
-  // Unsafe to use unless has_thread_id_support
-  AtomicInt<uint32_t> thread_id;
-  LazyValue<uint32_t, GetThreadIDArg> current_thread_id;
-
-  /// the 4-byte-aligned address that encompasses the init byte (i.e. the
-  /// address of the raw guard object).
-  int* const base_address;
-
-  /// Create the expected integer value for futex `wait(int* addr, int expected)`.
-  /// We pass the base address as the first argument, So this function creates
-  /// an zero-initialized integer  with `b` copied at the correct offset.
-  static int expected_value_for_futex(uint8_t b) {
-    int dest_val = 0;
-    std::memcpy(reinterpret_cast<char*>(&dest_val) + 1, &b, 1);
-    return dest_val;
-  }
-
-  static_assert(Wait != nullptr && Wake != nullptr, "");
-};
-
-//===----------------------------------------------------------------------===//
 //                          GuardObject
 //===----------------------------------------------------------------------===//
 
@@ -601,12 +469,6 @@ template <class Mutex, class CondVar, Mutex& global_mutex, CondVar& global_cond,
           uint32_t (*GetThreadID)() = PlatformThreadID>
 using GlobalMutexGuard = GuardObject<InitByteGlobalMutex<Mutex, CondVar, global_mutex, global_cond, GetThreadID>>;
 
-/// FutexGuard - Manages initialization using atomics and the futex syscall for
-/// waiting and waking.
-template <void (*Wait)(int*, int) = PlatformFutexWait, void (*Wake)(int*) = PlatformFutexWake,
-          uint32_t (*GetThreadIDArg)() = PlatformThreadID>
-using FutexGuard = GuardObject<InitByteFutex<Wait, Wake, GetThreadIDArg>>;
-
 //===----------------------------------------------------------------------===//
 //
 //===----------------------------------------------------------------------===//
@@ -618,7 +480,7 @@ struct GlobalStatic {
 template <class T>
 _LIBCPP_CONSTINIT T GlobalStatic<T>::instance = {};
 
-enum class Implementation { NoThreads, GlobalMutex, Futex };
+enum class Implementation { NoThreads, GlobalMutex };
 
 template <Implementation Impl>
 struct SelectImplementation;
@@ -634,24 +496,14 @@ struct SelectImplementation<Implementation::GlobalMutex> {
                                 GlobalStatic<LibcppCondVar>::instance, PlatformThreadID>;
 };
 
-template <>
-struct SelectImplementation<Implementation::Futex> {
-  using type = FutexGuard<PlatformFutexWait, PlatformFutexWake, PlatformThreadID>;
-};
-
 // TODO(EricWF): We should prefer the futex implementation when available. But
 // it should be done in a separate step from adding the implementation.
 constexpr Implementation CurrentImplementation =
 #if defined(_LIBCXXABI_HAS_NO_THREADS)
     Implementation::NoThreads;
-#elif defined(_LIBCXXABI_USE_FUTEX)
-    Implementation::Futex;
 #else
     Implementation::GlobalMutex;
 #endif
-
-static_assert(CurrentImplementation != Implementation::Futex || PlatformSupportsFutex(),
-              "Futex selected but not supported");
 
 using SelectedImplementation = SelectImplementation<CurrentImplementation>::type;
 
