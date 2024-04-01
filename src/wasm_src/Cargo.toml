@@ -21,6 +21,7 @@ console_error_panic_hook = { version = "0.1.7", optional = true }
 rayon = { version = "1.8.1" }
 wasm-bindgen-rayon = { version = "1.2.1" }
 thread-id = "4.2.1"
+wasm_sync = "0.1.2"
 
 [dependencies.web-sys]
 version = "0.3.68"

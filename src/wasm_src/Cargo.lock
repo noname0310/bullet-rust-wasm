@@ -13,6 +13,7 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-rayon",
  "wasm-bindgen-test",
+ "wasm_sync",
  "web-sys",
 ]
 
