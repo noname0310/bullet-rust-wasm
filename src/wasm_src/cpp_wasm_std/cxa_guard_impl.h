@@ -55,7 +55,6 @@
 #  endif
 #endif
 
-#include <__threading_support>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -235,33 +234,54 @@ private:
 //                     Global Mutex Implementation
 //===----------------------------------------------------------------------===//
 
+typedef void* mutex_t;
+typedef void* condvar_t;
+
+extern "C" {
+  mutex_t bw_mutex_init();
+  void bw_mutex_destroy(mutex_t mutex);
+  uint8_t bw_mutex_lock(mutex_t mutex);
+  uint8_t bw_mutex_unlock(mutex_t mutex);
+
+  condvar_t bw_cond_init();
+  void bw_cond_destroy(condvar_t condvar);
+  uint8_t bw_cond_wait(condvar_t condvar, mutex_t mutex);
+  uint8_t bw_cond_broadcast(condvar_t condvar);
+}
+
 struct LibcppMutex;
 struct LibcppCondVar;
 
 #ifndef _LIBCXXABI_HAS_NO_THREADS
 struct LibcppMutex {
-  LibcppMutex() = default;
+  LibcppMutex(): mutex(bw_mutex_init()) {}
   LibcppMutex(LibcppMutex const&) = delete;
   LibcppMutex& operator=(LibcppMutex const&) = delete;
+  ~LibcppMutex() {
+    bw_mutex_destroy(mutex);
+  }
 
-  bool lock() { return std::__libcpp_mutex_lock(&mutex); }
-  bool unlock() { return std::__libcpp_mutex_unlock(&mutex); }
+  bool lock() { return bw_mutex_lock(mutex); }
+  bool unlock() { return bw_mutex_unlock(mutex); }
 
 private:
   friend struct LibcppCondVar;
-  std::__libcpp_mutex_t mutex = _LIBCPP_MUTEX_INITIALIZER;
+  mutex_t mutex;
 };
 
 struct LibcppCondVar {
-  LibcppCondVar() = default;
+  LibcppCondVar(): cond(bw_cond_init()) {}
   LibcppCondVar(LibcppCondVar const&) = delete;
   LibcppCondVar& operator=(LibcppCondVar const&) = delete;
+  ~LibcppCondVar() {
+    bw_cond_destroy(cond);
+  }
 
-  bool wait(LibcppMutex& mut) { return std::__libcpp_condvar_wait(&cond, &mut.mutex); }
-  bool broadcast() { return std::__libcpp_condvar_broadcast(&cond); }
+  bool wait(LibcppMutex& mut) { return bw_cond_wait(cond, mut.mutex); }
+  bool broadcast() { return bw_cond_broadcast(cond); }
 
 private:
-  std::__libcpp_condvar_t cond = _LIBCPP_CONDVAR_INITIALIZER;
+  condvar_t cond;
 };
 #else
 struct LibcppMutex {};
@@ -451,7 +471,8 @@ struct GlobalStatic {
   static T instance;
 };
 template <class T>
-_LIBCPP_CONSTINIT T GlobalStatic<T>::instance = {};
+// _LIBCPP_CONSTINIT // disable constinit for avoid compile error
+T GlobalStatic<T>::instance = {};
 
 enum class Implementation { NoThreads, GlobalMutex };
 

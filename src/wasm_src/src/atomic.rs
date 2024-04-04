@@ -19,13 +19,19 @@ pub extern "C" fn bw_mutex_destroy(mutex: *mut wasm_sync::Mutex<()>) {
 }
 
 #[no_mangle]
-pub extern "C" fn bw_mutex_lock(mutex: *mut wasm_sync::Mutex<()>) {
-    unsafe { *mutex }.lock().unwrap();
+pub extern "C" fn bw_mutex_lock(mutex: *mut wasm_sync::Mutex<()>) -> u8 {
+    match unsafe { *mutex }.lock() {
+        Ok(_) => 0,
+        Err(_) => 1,
+    }
 }
 
 #[no_mangle]
-pub extern "C" fn bw_mutex_unlock(mutex: *mut wasm_sync::Mutex<()>) {
-    unsafe { *mutex }.unlock().unwrap();
+pub extern "C" fn bw_mutex_unlock(mutex: *mut wasm_sync::Mutex<()>) -> u8 {
+    match unsafe { *mutex }() {
+        Ok(_) => 0,
+        Err(_) => 1,
+    }
 }
 
 #[no_mangle]
@@ -44,14 +50,20 @@ pub extern "C" fn bw_cond_destroy(cond: *mut wasm_sync::Condvar) {
 }
 
 #[no_mangle]
-pub extern "C" fn bw_cond_wait(cond: *mut wasm_sync::Condvar, mutex: *mut wasm_sync::Mutex<()>) {
-    unsafe {
-        let mut guard = mutex.lock().unwrap();
-        cond.wait(&mut guard).unwrap();
+pub extern "C" fn bw_cond_wait(cond: *mut wasm_sync::Condvar, mutex: *mut wasm_sync::Mutex<()>) -> u8 {
+    let mut guard = match unsafe { *mutex }.lock() {
+        Ok(guard) => guard,
+        Err(_) => return 1,
+    };
+
+    match unsafe { *cond }.wait(guard) {
+        Ok(_) => 0,
+        Err(_) => 1,
     }
 }
 
 #[no_mangle]
-pub extern "C" fn bw_cond_broadcast(cond: *mut wasm_sync::Condvar) {
+pub extern "C" fn bw_cond_broadcast(cond: *mut wasm_sync::Condvar) -> u8 {
     unsafe { *cond }.notify_all();
+    0
 }
