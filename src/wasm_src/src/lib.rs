@@ -5,7 +5,7 @@ mod atomic;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;
-use rayon::prelude::*;
+// use rayon::prelude::*;
 
 pub use wasm_bindgen_rayon::init_thread_pool;
 
