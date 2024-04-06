@@ -240,8 +240,8 @@ typedef void* condvar_t;
 extern "C" {
   mutex_t bw_mutex_init();
   void bw_mutex_destroy(mutex_t mutex);
-  uint8_t bw_mutex_lock(mutex_t mutex);
-  uint8_t bw_mutex_unlock(mutex_t mutex);
+  void bw_mutex_lock(mutex_t mutex);
+  void bw_mutex_unlock(mutex_t mutex);
 
   condvar_t bw_cond_init();
   void bw_cond_destroy(condvar_t condvar);
@@ -261,8 +261,14 @@ struct LibcppMutex {
     bw_mutex_destroy(mutex);
   }
 
-  bool lock() { return bw_mutex_lock(mutex); }
-  bool unlock() { return bw_mutex_unlock(mutex); }
+  bool lock() { 
+    bw_mutex_lock(mutex);
+    return false;
+  }
+  bool unlock() { 
+    bw_mutex_unlock(mutex);
+    return false;
+  }
 
 private:
   friend struct LibcppCondVar;
