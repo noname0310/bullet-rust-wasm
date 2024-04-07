@@ -6,16 +6,10 @@ pub extern "C" fn bw_get_thread_id() -> usize {
 }
 
 #[no_mangle]
-pub extern "C" fn bw_mutex_init() -> *mut parking_lot::Mutex<()> {
-    let mutex = Box::new(parking_lot::Mutex::new(()));
-    let ptr = Box::leak(mutex) as *mut parking_lot::Mutex<()>;
-    ptr
-}
-
-#[no_mangle]
-pub extern "C" fn bw_mutex_destroy(mutex: *mut parking_lot::Mutex<()>) {
+pub extern "C" fn bw_mutex_init() -> u8 {
+    let mutex = parking_lot::Mutex::new(());
     unsafe {
-        Box::from_raw(mutex);
+        std::mem::transmute(mutex)
     }
 }
 
@@ -24,6 +18,7 @@ pub extern "C" fn bw_mutex_lock(mutex: *mut parking_lot::Mutex<()>) {
     unsafe {
         (&mut *mutex).raw()
     }.lock();
+    web_sys::console::log_1(&"bw_mutex_lock".into());
 }
 
 #[no_mangle]
@@ -31,19 +26,14 @@ pub extern "C" fn bw_mutex_unlock(mutex: *mut parking_lot::Mutex<()>) {
     unsafe {
         (&mut *mutex).force_unlock();
     }
+    web_sys::console::log_1(&"bw_mutex_unlock".into());
 }
 
 #[no_mangle]
-pub extern "C" fn bw_cond_init() -> *mut parking_lot::Condvar {
-    let cond = Box::new(parking_lot::Condvar::new());
-    let ptr = Box::leak(cond) as *mut parking_lot::Condvar;
-    ptr
-}
-
-#[no_mangle]
-pub extern "C" fn bw_cond_destroy(cond: *mut parking_lot::Condvar) {
+pub extern "C" fn bw_cond_init() -> u32 {
+    let cond = parking_lot::Condvar::new();
     unsafe {
-        Box::from_raw(cond);
+        std::mem::transmute(cond)
     }
 }
 
