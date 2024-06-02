@@ -3,6 +3,7 @@ mod allocator;
 mod error_handler;
 mod atomic;
 
+// use atomic::{bw_mutex_init, bw_mutex_lock, bw_mutex_unlock, bw_get_thread_id, UnsafeManualMutex};
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 // use rayon::prelude::*;
@@ -75,21 +76,52 @@ pub fn test() {
         let rigidbody = bt_create_rigidbody();
         bt_delete_rigidbody(rigidbody);
 
-        // for _ in 0..10 {
-        //     rayon::spawn(move || {
-        //         bt_link_test();
-        //     });
-        // }
+        for _ in 0..10 {
+            rayon::spawn(move || {
+                bt_link_test();
+            });
+        }
     }
 
-    let mutex = std::sync::Arc::new(parking_lot::Mutex::new(1));
+    // wasmsync test
 
-    for _ in 0..10 {
-        let mutex = mutex.clone();
-        rayon::spawn(move || {
-            let mut guard = mutex.lock();
-            *guard += 1;
-            console::log_1(&format!("mutex: {}", *guard).into());
-        });
-    } 
+    // let mut mutex = wasm_sync::Mutex::new(0);
+    // for _ in 0..10 {
+    //     let mutex_ptr = &mut mutex as *mut wasm_sync::Mutex<i32> as usize;
+    //     rayon::spawn(move || {
+    //         let mutex = unsafe { &mut *(mutex_ptr as *mut wasm_sync::Mutex<i32>) };
+    //         let mut data = mutex.lock().unwrap();
+    //         *data += 1;
+    //         console::log_1(&format!("counter: {}", *data).into());
+    //     });
+    // }
+
+    // mutex test
+
+    // let unsafe_manual_mutex = bw_mutex_init();
+    // let counter = Box::new(0);
+    // let counter = Box::leak(counter) as *mut i32;
+
+    // for _ in 0..1000 {
+    //     let mutex = unsafe_manual_mutex as usize;
+    //     let counter = counter as usize;
+
+    //     rayon::spawn(move || {
+    //         let mutex = mutex as *mut UnsafeManualMutex;
+    //         let counter = counter as *mut i32;
+
+    //         let lock_result = bw_mutex_lock(mutex);
+    //         if lock_result != 0 {
+    //             console::log_1(&"lock failed".into());
+    //         }
+    //         unsafe {
+    //             *counter += 1;
+    //             console::log_1(&format!("counter: {} thread: {}", *counter, bw_get_thread_id()).into());
+    //         }
+    //         let unlock_result = bw_mutex_unlock(mutex);
+    //         if unlock_result != 0 {
+    //             console::log_1(&"unlock failed".into());
+    //         }
+    //     });
+    // } 
 }

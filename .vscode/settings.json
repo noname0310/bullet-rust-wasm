@@ -10,5 +10,8 @@
         "__threading_support": "cpp",
         "__config_site": "cpp",
         "memory": "cpp"
+    },
+    "rust-analyzer.cargo.extraEnv": {
+        "RUSTFLAGS": "-Ctarget-feature=+simd128,+atomics,+bulk-memory,+mutable-globals"
     }
 }

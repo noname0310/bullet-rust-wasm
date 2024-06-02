@@ -238,11 +238,11 @@ typedef uint8_t mutex_t;
 typedef uint32_t condvar_t;
 
 extern "C" {
-  mutex_t bw_mutex_init();
-  void bw_mutex_lock(mutex_t* mutex);
-  void bw_mutex_unlock(mutex_t* mutex);
+  mutex_t* bw_mutex_init();
+  uint8_t bw_mutex_lock(mutex_t* mutex);
+  uint8_t bw_mutex_unlock(mutex_t* mutex);
 
-  condvar_t bw_cond_init();
+  condvar_t* bw_cond_init();
   uint8_t bw_cond_wait(condvar_t* condvar, mutex_t* mutex);
   uint8_t bw_cond_broadcast(condvar_t* condvar);
 }
@@ -257,17 +257,15 @@ struct LibcppMutex {
   LibcppMutex& operator=(LibcppMutex const&) = delete;
 
   bool lock() { 
-    bw_mutex_lock(&mutex);
-    return false;
+    return bw_mutex_lock(mutex);
   }
   bool unlock() { 
-    bw_mutex_unlock(&mutex);
-    return false;
+    return bw_mutex_unlock(mutex);
   }
 
 private:
   friend struct LibcppCondVar;
-  mutex_t mutex;
+  mutex_t* mutex;
 };
 
 struct LibcppCondVar {
@@ -275,11 +273,11 @@ struct LibcppCondVar {
   LibcppCondVar(LibcppCondVar const&) = delete;
   LibcppCondVar& operator=(LibcppCondVar const&) = delete;
 
-  bool wait(LibcppMutex& mut) { return bw_cond_wait(&cond, &mut.mutex); }
-  bool broadcast() { return bw_cond_broadcast(&cond); }
+  bool wait(LibcppMutex& mut) { return bw_cond_wait(cond, mut.mutex); }
+  bool broadcast() { return bw_cond_broadcast(cond); }
 
 private:
-  condvar_t cond;
+  condvar_t* cond;
 };
 #else
 struct LibcppMutex {};
