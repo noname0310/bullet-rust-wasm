@@ -95,6 +95,7 @@ fn main() {
             "cpp_src/BulletCollision/NarrowPhaseCollision/btSubSimplexConvexCast.cpp",
             "cpp_src/BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.cpp",
             "cpp_src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp",
+            "cpp_src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp",
             "cpp_src/BulletDynamics/Dynamics/btRigidBody.cpp",
             "cpp_src/LinearMath/btAlignedAllocator.cpp",
             "cpp_src/LinearMath/btConvexHullComputer.cpp",

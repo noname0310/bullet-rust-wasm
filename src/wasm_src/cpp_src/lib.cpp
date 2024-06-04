@@ -96,6 +96,7 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletCollision/CollisionDispatch/btSphereSphereCollisionAlgorithm.h"
 #include "BulletCollision/CollisionDispatch/btSphereTriangleCollisionAlgorithm.h"
 #include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
+#include "BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h"
 
 // test extern functions
 
@@ -224,6 +225,7 @@ extern "C" void bt_link_test() {
     sdf.interpolate(0, s, btVector3(0, 0, 0), &v);
 
     btDefaultCollisionConfiguration collision_config;
+    btSequentialImpulseConstraintSolver solver;
 }
 
 //
