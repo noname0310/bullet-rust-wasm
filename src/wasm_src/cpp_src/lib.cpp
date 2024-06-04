@@ -89,6 +89,13 @@ void operator delete[](void* ptr, size_t size) noexcept {
 #include "BulletCollision/CollisionDispatch/btEmptyCollisionAlgorithm.h"
 #include "BulletCollision/CollisionDispatch/btConvexConcaveCollisionAlgorithm.h"
 #include "BulletCollision/CollisionShapes/btMiniSDF.h"
+#include "BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.h"
+#include "BulletCollision/CollisionDispatch/btCompoundCompoundCollisionAlgorithm.h"
+#include "BulletCollision/CollisionDispatch/btConvexPlaneCollisionAlgorithm.h"
+#include "BulletCollision/CollisionDispatch/btBoxBoxCollisionAlgorithm.h"
+#include "BulletCollision/CollisionDispatch/btSphereSphereCollisionAlgorithm.h"
+#include "BulletCollision/CollisionDispatch/btSphereTriangleCollisionAlgorithm.h"
+#include "BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h"
 
 // test extern functions
 
@@ -215,6 +222,8 @@ extern "C" void bt_link_test() {
     double s;
     btVector3 v;
     sdf.interpolate(0, s, btVector3(0, 0, 0), &v);
+
+    btDefaultCollisionConfiguration collision_config;
 }
 
 //
