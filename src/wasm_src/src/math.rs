@@ -77,3 +77,18 @@ unsafe extern "C" fn bw_isnan(x: f64) -> bool {
 unsafe extern "C" fn bw_fabs(x: f64) -> f64 {
     x.abs()
 }
+
+#[no_mangle]
+unsafe extern "C" fn bw_floor(x: f64) -> f64 {
+    x.floor()
+}
+
+#[no_mangle]
+unsafe extern "C" fn bw_ceil(x: f64) -> f64 {
+    x.ceil()
+}
+
+#[no_mangle]
+unsafe extern "C" fn bw_sqrt(x: f64) -> f64 {
+    x.sqrt()
+}

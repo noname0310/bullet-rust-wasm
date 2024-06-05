@@ -20,6 +20,11 @@ extern "C" {
     float bw_logf(float x);
     float bw_powf(float x, float y);
     float bw_fmodf(float x, float y);
+
+    double bw_floor(double x);
+    double bw_ceil(double x);
+
+    double bw_sqrt(double x);
 }
 
 inline float sqrtf(float x) {
@@ -106,5 +111,25 @@ inline double fabs(double x) {
 // for use SIMD instructions
 
 #include <smmintrin.h>
+
+//
+
+// for btHeightfieldTerrainShape
+
+inline double floor(double x) {
+    return bw_floor(x);
+}
+
+inline double ceil(double x) {
+    return bw_ceil(x);
+}
+
+//
+
+// for ConstraintSolvers
+
+inline double sqrt(double x) {
+    return bw_sqrt(x);
+}
 
 //
