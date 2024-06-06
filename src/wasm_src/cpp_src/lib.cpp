@@ -138,4 +138,9 @@ extern "C" void bt_world_remove_constraint(void* world, void* constraint) {
     w->removeConstraint(c);
 }
 
+class bwRigidBody final {
+private:
+    btRigidBody* m_body;
+};
+
 //

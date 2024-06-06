@@ -1,3 +1,4 @@
+use glam::Vec3;
 
 #[link(name = "bullet")]
 extern "C" {
@@ -28,8 +29,8 @@ impl PhysicsWorld {
         Self { world }
     }
 
-    pub(crate) fn set_gravity(&self, x: f32, y: f32, z: f32) {
-        unsafe { bt_world_set_gravity(self.world, x, y, z) };
+    pub(crate) fn set_gravity(&self, gravity: Vec3) {
+        unsafe { bt_world_set_gravity(self.world, gravity.x, gravity.y, gravity.z) };
     }
 
     pub(crate) fn step_simulation(&self, time_step: f32, max_sub_steps: i32, fixed_time_step: f32) {
