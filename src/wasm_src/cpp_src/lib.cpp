@@ -97,9 +97,9 @@ extern "C" void bt_rigidbody_construction_info_set_shape_type(void* info, uint8_
     i->m_shapeType = static_cast<bwRigidBodyShapeType>(shapeType);
 }
 
-extern "C" void bt_rigidbody_construction_info_set_shape_size(void* info, float* size_buffer) {
+extern "C" void bt_rigidbody_construction_info_set_shape_size(void* info, float* sizeBuffer) {
     bwRigidBodyConstructionInfo* i = static_cast<bwRigidBodyConstructionInfo*>(info);
-    i->m_shapeSize = btVector4(size_buffer[0], size_buffer[1], size_buffer[2], size_buffer[3]);
+    i->m_shapeSize = btVector4(sizeBuffer[0], sizeBuffer[1], sizeBuffer[2], sizeBuffer[3]);
 }
 
 extern "C" void bt_rigidbody_construction_info_set_motion_type(void* info, uint8_t motionType) {
@@ -107,11 +107,11 @@ extern "C" void bt_rigidbody_construction_info_set_motion_type(void* info, uint8
     i->m_motionType = static_cast<bwRigidBodyMotionType>(motionType);
 }
 
-extern "C" void bt_rigidbody_construction_info_set_start_transform(void* info, float* position_buffer, float* rotation_buffer) {
+extern "C" void bt_rigidbody_construction_info_set_start_transform(void* info, float* positionBuffer, float* rotationBuffer) {
     bwRigidBodyConstructionInfo* i = static_cast<bwRigidBodyConstructionInfo*>(info);
     i->m_startTransform = btTransform(
-        btQuaternion(rotation_buffer[0], rotation_buffer[1], rotation_buffer[2], rotation_buffer[3]),
-        btVector3(position_buffer[0], position_buffer[1], position_buffer[2])
+        btQuaternion(rotationBuffer[0], rotationBuffer[1], rotationBuffer[2], rotationBuffer[3]),
+        btVector3(positionBuffer[0], positionBuffer[1], positionBuffer[2])
     );
 }
 
@@ -189,27 +189,19 @@ public:
                 break;
         }
 
-        switch (info->m_motionType) {
-            case bwRigidBodyMotionType::DYNAMIC:
-                m_motionState = new btDefaultMotionState(info->m_startTransform);
-                break;
-            case bwRigidBodyMotionType::KINEMATIC:
-                m_motionState = new btDefaultMotionState(info->m_startTransform);
-                break;
-            case bwRigidBodyMotionType::STATIC:
-                m_motionState = new btDefaultMotionState(info->m_startTransform);
-                break;
-            default:
-                m_motionState = nullptr;
-                break;
+        m_motionState = new btDefaultMotionState(info->m_startTransform);   
+
+        btScalar mass = 0.0f;
+        if (info->m_motionType == bwRigidBodyMotionType::DYNAMIC) {
+            mass = info->m_mass;
         }
 
         btVector3 localInertia(0.0f, 0.0f, 0.0f);
-        if (info->m_mass != 0.0f) {
-            m_shape->calculateLocalInertia(info->m_mass, localInertia);
+        if (mass != 0.0f) {
+            m_shape->calculateLocalInertia(mass, localInertia);
         }
 
-        btRigidBody::btRigidBodyConstructionInfo rbInfo(info->m_mass, m_motionState, m_shape, localInertia);
+        btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, m_motionState, m_shape, localInertia);
         rbInfo.m_linearDamping = info->m_linearDamping;
         rbInfo.m_angularDamping = info->m_angularDamping;
         rbInfo.m_friction = info->m_friction;
@@ -220,6 +212,13 @@ public:
         m_body->setSleepingThresholds(info->m_linearSleepingThreshold, info->m_angularSleepingThreshold);
         if (info->m_disableDeactivation) {
             m_body->setActivationState(DISABLE_DEACTIVATION);
+        }
+
+        if (info->m_motionType == bwRigidBodyMotionType::KINEMATIC) {
+            m_body->setCollisionFlags(m_body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+            m_body->setActivationState(DISABLE_DEACTIVATION);
+        } else if (info->m_motionType == bwRigidBodyMotionType::STATIC) {
+            m_body->setCollisionFlags(m_body->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
         }
         
         m_collisionGroup = info->m_collisionGroup;
@@ -251,14 +250,14 @@ public:
         return m_collisionMask;
     }
 
-    void getTransform(btScalar* transform_buffer) const {
+    void getTransform(btScalar* transforBuffer) const {
         btTransform& transform = m_body->getWorldTransform();
-        transform.getOpenGLMatrix(transform_buffer);
+        transform.getOpenGLMatrix(transforBuffer);
     }
 
-    void setTransform(btScalar* transform_buffer) {
+    void setTransform(btScalar* transforBuffer) {
         btTransform transform;
-        transform.setFromOpenGLMatrix(transform_buffer);
+        transform.setFromOpenGLMatrix(transforBuffer);
         m_body->setWorldTransform(transform);
     }
 };
@@ -274,14 +273,14 @@ extern "C" void bt_destroy_rigidbody(void* body) {
     delete b;
 }
 
-extern "C" void bt_rigidbody_get_transform(void* body, float* transform_buffer) {
+extern "C" void bt_rigidbody_get_transform(void* body, float* transformBuffer) {
     bwRigidBody* b = static_cast<bwRigidBody*>(body);
-    b->getTransform(transform_buffer);
+    b->getTransform(transformBuffer);
 }
 
-extern "C" void bt_rigidbody_set_transform(void* body, float* transform_buffer) {
+extern "C" void bt_rigidbody_set_transform(void* body, float* transformBuffer) {
     bwRigidBody* b = static_cast<bwRigidBody*>(body);
-    b->setTransform(transform_buffer);
+    b->setTransform(transformBuffer);
 }
 
 enum class bwConstraintType : uint8_t {
@@ -299,8 +298,6 @@ enum class bwConstraintType : uint8_t {
 
 struct bwConstraintConstructionInfo final {
     bwConstraintType m_type = bwConstraintType::GENERIC_6DOF;
-    bwRigidBody* m_bodyA = nullptr;
-    bwRigidBody* m_bodyB = nullptr;
     btTransform m_frameA = btTransform::getIdentity();
     btTransform m_frameB = btTransform::getIdentity();
     bool m_useLinearReferenceFrameA = true;
@@ -328,16 +325,10 @@ extern "C" void bt_constraint_construction_info_set_type(void* info, uint8_t typ
     i->m_type = static_cast<bwConstraintType>(type);
 }
 
-extern "C" void bt_constraint_construction_info_set_bodies(void* info, void* bodyA, void* bodyB) {
+extern "C" void bt_constraint_construction_info_set_frames(void* info, float* frameABuffer, float* frameBBuffer) {
     bwConstraintConstructionInfo* i = static_cast<bwConstraintConstructionInfo*>(info);
-    i->m_bodyA = static_cast<bwRigidBody*>(bodyA);
-    i->m_bodyB = static_cast<bwRigidBody*>(bodyB);
-}
-
-extern "C" void bt_constraint_construction_info_set_frames(void* info, float* frameA_buffer, float* frameB_buffer) {
-    bwConstraintConstructionInfo* i = static_cast<bwConstraintConstructionInfo*>(info);
-    i->m_frameA.setFromOpenGLMatrix(frameA_buffer);
-    i->m_frameB.setFromOpenGLMatrix(frameB_buffer);
+    i->m_frameA.setFromOpenGLMatrix(frameABuffer);
+    i->m_frameB.setFromOpenGLMatrix(frameBBuffer);
 }
 
 extern "C" void bt_constraint_construction_info_set_use_linear_reference_frame_a(void* info, uint8_t useLinearReferenceFrameA) {
@@ -350,22 +341,22 @@ extern "C" void bt_constraint_construction_info_set_disable_collisions_between_l
     i->m_disableCollisionsBetweenLinkedBodies = disableCollisionsBetweenLinkedBodies;
 }
 
-extern "C" void bt_constraint_construction_info_set_linear_limits(void* info, float* lowerLimit_buffer, float* upperLimit_buffer) {
+extern "C" void bt_constraint_construction_info_set_linear_limits(void* info, float* lowerLimitBuffer, float* upperLimitBuffer) {
     bwConstraintConstructionInfo* i = static_cast<bwConstraintConstructionInfo*>(info);
-    i->m_linearLowerLimit = btVector3(lowerLimit_buffer[0], lowerLimit_buffer[1], lowerLimit_buffer[2]);
-    i->m_linearUpperLimit = btVector3(upperLimit_buffer[0], upperLimit_buffer[1], upperLimit_buffer[2]);
+    i->m_linearLowerLimit = btVector3(lowerLimitBuffer[0], lowerLimitBuffer[1], lowerLimitBuffer[2]);
+    i->m_linearUpperLimit = btVector3(upperLimitBuffer[0], upperLimitBuffer[1], upperLimitBuffer[2]);
 }
 
-extern "C" void bt_constraint_construction_info_set_angular_limits(void* info, float* lowerLimit_buffer, float* upperLimit_buffer) {
+extern "C" void bt_constraint_construction_info_set_angular_limits(void* info, float* lowerLimitBuffer, float* upperLimitBuffer) {
     bwConstraintConstructionInfo* i = static_cast<bwConstraintConstructionInfo*>(info);
-    i->m_angularLowerLimit = btVector3(lowerLimit_buffer[0], lowerLimit_buffer[1], lowerLimit_buffer[2]);
-    i->m_angularUpperLimit = btVector3(upperLimit_buffer[0], upperLimit_buffer[1], upperLimit_buffer[2]);
+    i->m_angularLowerLimit = btVector3(lowerLimitBuffer[0], lowerLimitBuffer[1], lowerLimitBuffer[2]);
+    i->m_angularUpperLimit = btVector3(upperLimitBuffer[0], upperLimitBuffer[1], upperLimitBuffer[2]);
 }
 
-extern "C" void bt_constraint_construction_info_set_stiffness(void* info, float* linearStiffness_buffer, float* angularStiffness_buffer) {
+extern "C" void bt_constraint_construction_info_set_stiffness(void* info, float* linearStiffnessBuffer, float* angularStiffnessBuffer) {
     bwConstraintConstructionInfo* i = static_cast<bwConstraintConstructionInfo*>(info);
-    i->m_linearStiffness = btVector3(linearStiffness_buffer[0], linearStiffness_buffer[1], linearStiffness_buffer[2]);
-    i->m_angularStiffness = btVector3(angularStiffness_buffer[0], angularStiffness_buffer[1], angularStiffness_buffer[2]);
+    i->m_linearStiffness = btVector3(linearStiffnessBuffer[0], linearStiffnessBuffer[1], linearStiffnessBuffer[2]);
+    i->m_angularStiffness = btVector3(angularStiffnessBuffer[0], angularStiffnessBuffer[1], angularStiffnessBuffer[2]);
 }
 
 class bwConstraint final {
@@ -374,12 +365,12 @@ private:
     bool m_disableCollisionsBetweenLinkedBodies;
 
 public:
-    bwConstraint(bwConstraintConstructionInfo* info) {
+    bwConstraint(bwConstraintConstructionInfo* info, bwRigidBody* bodyA, bwRigidBody* bodyB) {
         switch (info->m_type) {
             case bwConstraintType::GENERIC_6DOF:
                 m_constraint = new btGeneric6DofConstraint(
-                    *info->m_bodyA->getBody(),
-                    *info->m_bodyB->getBody(),
+                    *bodyA->getBody(),
+                    *bodyB->getBody(),
                     info->m_frameA,
                     info->m_frameB,
                     info->m_useLinearReferenceFrameA
@@ -387,8 +378,8 @@ public:
                 break;
             case bwConstraintType::GENERIC_6DOF_SPRING:
                 m_constraint = new btGeneric6DofSpringConstraint(
-                    *info->m_bodyA->getBody(),
-                    *info->m_bodyB->getBody(),
+                    *bodyA->getBody(),
+                    *bodyB->getBody(),
                     info->m_frameA,
                     info->m_frameB,
                     info->m_useLinearReferenceFrameA
@@ -464,9 +455,11 @@ public:
     }
 };
 
-extern "C" void* bt_create_constraint(void* info) {
+extern "C" void* bt_create_constraint(void* info, void* bodyA, void* bodyB) {
     bwConstraintConstructionInfo* i = static_cast<bwConstraintConstructionInfo*>(info);
-    bwConstraint* constraint = new bwConstraint(i);
+    bwRigidBody* a = static_cast<bwRigidBody*>(bodyA);
+    bwRigidBody* b = static_cast<bwRigidBody*>(bodyB);
+    bwConstraint* constraint = new bwConstraint(i, a, b);
     return constraint;
 }
 
