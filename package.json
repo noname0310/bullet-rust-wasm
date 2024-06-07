@@ -9,6 +9,10 @@
     "author": "noname0310",
     "license": "MIT",
     "devDependencies": {
+        "@babylonjs/core": "^7.10.0",
+        "@babylonjs/inspector": "^7.10.0",
+        "@babylonjs/loaders": "^7.10.0",
+        "@babylonjs/materials": "^7.10.0",
         "@typescript-eslint/eslint-plugin": "^7.12.0",
         "@typescript-eslint/parser": "^7.12.0",
         "@wasm-tool/wasm-pack-plugin": "^1.7.0",
