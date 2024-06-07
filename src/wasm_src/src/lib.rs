@@ -175,14 +175,64 @@ impl BwPhysicsWorld {
     }
 }
 
-#[wasm_bindgen(js_name = createPhysicsWorld)]
-pub fn create_physics_world() -> BwPhysicsWorld {
-    BwPhysicsWorld::new()
+#[wasm_bindgen]
+pub struct BwMultiPhysicsWorld {
+    worlds: Vec<PhysicsWorld>,
+    transform_buffer: Vec<f32>,
+}
+
+#[wasm_bindgen]
+impl BwMultiPhysicsWorld {
+    pub(crate) fn new() -> Self {
+        Self {
+            worlds: Vec::new(),
+            transform_buffer: Vec::new(),
+        }
+    }
+
+    #[wasm_bindgen(js_name = addPhysicsWorld)]
+    pub fn add_physics_world(&mut self, world: BwPhysicsWorld) -> u32 {
+        self.worlds.push(world.world);
+        self.worlds.len() as u32 - 1
+    }
+
+    #[wasm_bindgen(js_name = stepSimulation)]
+    pub fn step_simulation(&mut self, time_step: f32, max_sub_steps: i32, fixed_time_step: f32) {
+        self.worlds.par_iter_mut().for_each(|world| {
+            world.step_simulation(time_step, max_sub_steps, fixed_time_step);
+        });
+    }
+
+    #[wasm_bindgen(js_name = getTransforms)]
+    pub fn get_transforms(&mut self, world_id: u32, id: u32) -> *const f32 {
+        let physics_world = &self.worlds[world_id as usize];
+        let physics_object = physics_world.get_physics_object(id);
+
+        self.transform_buffer.clear();
+        self.transform_buffer.reserve(16 * physics_object.bodies().len());
+
+        for body in physics_object.bodies() {
+            let transform = body.get_transform();
+            self.transform_buffer.extend_from_slice(transform.as_ref());
+        }
+
+        self.transform_buffer.as_ptr()
+    }
 }
 
 #[wasm_bindgen(js_name = createRigidbodyConstructionInfo)]
 pub fn create_rigidbody_construction_info() -> BwRigidbodyConstructionInfo {
     BwRigidbodyConstructionInfo::new()
+}
+
+#[wasm_bindgen(js_name = createPhysicsWorld)]
+pub fn create_physics_world() -> BwPhysicsWorld {
+    BwPhysicsWorld::new()
+}
+
+#[wasm_bindgen(js_name = createMultiPhysicsWorld)]
+pub fn create_multi_physics_world() -> BwMultiPhysicsWorld {
+    BwMultiPhysicsWorld::new()
 }
 
 fn world_test() {

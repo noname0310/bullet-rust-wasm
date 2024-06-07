@@ -136,3 +136,5 @@ impl Drop for PhysicsWorld {
         unsafe { bt_destroy_world(self.world) };
     }
 }
+
+unsafe impl Send for PhysicsWorld {}
