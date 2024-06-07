@@ -9,8 +9,8 @@ crate-type = ["cdylib", "rlib"]
 [profile.release]
 opt-level = 3
 
-# [profile.dev]
-# opt-level = 3
+[profile.dev]
+opt-level = 3
 
 [features]
 default = ["console_error_panic_hook"]

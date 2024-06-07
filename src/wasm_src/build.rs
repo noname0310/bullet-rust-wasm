@@ -126,6 +126,7 @@ fn main() {
             "cpp_src/LinearMath/btThreads.cpp",
             "cpp_src/LinearMath/btVector3.cpp",
         ])
+        .opt_level_str("fast")
         .compile("bullet");
 
     println!("cargo:rerun-if-changed=cpp_wasm_std");
