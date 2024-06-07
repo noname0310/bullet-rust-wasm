@@ -55,12 +55,20 @@ impl PhysicsObject {
         Ok(())
     }
     
-    pub(crate) fn get_body(&self, handle: RigidbodyHandle) -> &Rigidbody {
-        &self.bodies[handle as usize]
+    pub(crate) fn bodies(&self) -> &Vec<Rigidbody> {
+        &self.bodies
     }
 
-    pub(crate) fn get_body_mut(&mut self, handle: RigidbodyHandle) -> &mut Rigidbody {
-        &mut self.bodies[handle as usize]
+    pub(crate) fn bodies_mut(&mut self) -> &mut Vec<Rigidbody> {
+        &mut self.bodies
+    }
+
+    pub(crate) fn constraints(&self) -> &Vec<Constraint> {
+        &self.constraints
+    }
+
+    pub(crate) fn constraints_mut(&mut self) -> &mut Vec<Constraint> {
+        &mut self.constraints
     }
 }
 
@@ -103,6 +111,10 @@ impl PhysicsWorld {
         let object = PhysicsObject::new(self.world);
         self.objects.insert(handle, object);
         self.objects.get_mut(&handle).unwrap()
+    }
+
+    pub(crate) fn destroy_physics_object(&mut self, handle: PhysicsObjectHandle) {
+        self.objects.remove(&handle);
     }
 
     pub(crate) fn get_physics_object(&self, handle: PhysicsObjectHandle) -> &PhysicsObject {

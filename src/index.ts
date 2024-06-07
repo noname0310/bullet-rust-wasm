@@ -18,7 +18,7 @@ const engine = new Engine(canvas, false, {
     alpha: false,
     premultipliedAlpha: false,
     powerPreference: "high-performance",
-    doNotHandleTouchAction: true,
+    doNotHandleTouchAction: false,
     doNotHandleContextLost: true,
     audioEngine: false,
     disableWebGL2Support: false
