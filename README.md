@@ -27,3 +27,37 @@ In conclusion, **bullet physics is now available in the rust web-assembly enviro
 - [x] Create a simple bullet physics binding in rust
 - [ ] Demonstrate bullet physics in a browser environment
 - [ ] Publish the project as a crate (currently, no plans to publish the project as a crate)
+
+## Build and Run Development Server
+
+To build the project, you need to have the following dependencies installed:
+
+- [nodejs](https://nodejs.org/en/)
+- [npm](https://www.npmjs.com/)
+- [rust](https://www.rust-lang.org/)
+- [clang](https://clang.llvm.org/)
+- [llvm](https://llvm.org/)
+
+For ubuntu, you can install the dependencies using the following commands:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y nodejs npm clang llvm
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+For windows, you can install the dependencies using the following links:
+
+- [nodejs and npm](https://nodejs.org/en/)
+- [rust](https://www.rust-lang.org/)
+- [clang and llvm](https://visualstudio.microsoft.com/vs/) (install visual studio with Clang and LLVM tools)
+- 
+![alt text](image.png)
+**Note:** Make sure to install the Clang and LLVM tools when installing visual studio.
+
+After installing the dependencies, run the following commands:
+
+```bash
+npm install
+npm start
+```
