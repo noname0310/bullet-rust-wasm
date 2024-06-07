@@ -4,6 +4,7 @@
     "description": "bullet physics via rust wasm",
     "scripts": {
         "start": "cross-env RUSTFLAGS=\"-Ctarget-feature=+simd128,+atomics,+bulk-memory,+mutable-globals\" webpack serve --mode development",
+        "build": "cross-env RUSTFLAGS=\"-Ctarget-feature=+simd128,+atomics,+bulk-memory,+mutable-globals\" webpack --mode production",
         "lint": "eslint --ext .ts,.tsx . --fix --cache"
     },
     "author": "noname0310",
