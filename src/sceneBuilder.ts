@@ -54,12 +54,12 @@ export class SceneBuilder implements ISceneBuilder {
         const yCount = 50;
         const worldMatrixBufferSize = 16 * xCount * yCount;
         const worldColorBufferSize = 3 * xCount * yCount;
-        const worldCount = Math.max(Math.min(24, Math.floor(navigator.hardwareConcurrency * 0.75)), 1);
+        const worldCount = Math.max(Math.min(32, Math.floor(navigator.hardwareConcurrency * 0.75)), 1);
         const physicsObjectId = 0;
 
         const worldXMargin = 120;
         const worldZMargin = 90;
-        const worldZWidth = Math.floor(worldCount / 4);
+        const worldZWidth = Math.ceil(worldCount / 4);
 
         const multiPhysicsWorld = wasmBindgen.createMultiPhysicsWorld();
 
