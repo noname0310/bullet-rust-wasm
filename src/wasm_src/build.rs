@@ -8,6 +8,7 @@ fn main() {
         .flag("-matomics")
         .flag("-mbulk-memory")
         .flag("-msimd128")
+        .flag("-mrelaxed-simd")
         .flag("-Wno-c++11-narrowing")
         .flag("-Wno-deprecated-declarations")
         .flag("-Wno-#pragma-messages")
