@@ -4,7 +4,6 @@ import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
-import { CascadedShadowGenerator } from "@babylonjs/core/Lights/Shadows/cascadedShadowGenerator";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { Matrix, Quaternion, Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -37,15 +36,15 @@ export class SceneBuilder implements ISceneBuilder {
 
         const directionalLight = new DirectionalLight("directionalLight", new Vector3(0.5, -1, 1), scene);
         directionalLight.intensity = 0.5;
+        directionalLight.shadowMaxZ = 200;
+        directionalLight.shadowMinZ = -200;
 
-        const shadowGenerator = new CascadedShadowGenerator(1024, directionalLight);
+        const shadowGenerator = new ShadowGenerator(2048, directionalLight, true);
         shadowGenerator.transparencyShadow = true;
         shadowGenerator.usePercentageCloserFiltering = true;
         shadowGenerator.forceBackFacesOnly = false;
-        shadowGenerator.lambda = 0.96;
-        shadowGenerator.bias = 0.007;
+        shadowGenerator.bias = 0.004;
         shadowGenerator.filteringQuality = ShadowGenerator.QUALITY_MEDIUM;
-        shadowGenerator.stabilizeCascades = true;
 
         const wasmInternal = await wasmBindgen.default();
         wasmBindgen.init();
@@ -53,12 +52,13 @@ export class SceneBuilder implements ISceneBuilder {
 
         const physicsWorld = wasmBindgen.createPhysicsWorld();
 
-        const xCount = 5;
+        const xCount = 8;
         const yCount = 100;
 
         const physicsObjectId = 0;
         const rigidbodyHandles = new Int32Array(xCount * yCount);
         const rigidbodyMatrixBuffer = new Float32Array(16 * xCount * yCount);
+        const colorBuffer = new Float32Array(3 * xCount * yCount);
         physicsWorld.createPhysicsObject(physicsObjectId);
 
         const ground = CreatePlane("ground", { size: 250 }, scene);
@@ -125,10 +125,15 @@ export class SceneBuilder implements ISceneBuilder {
 
                 Matrix.ComposeToRef(scale, rotation, position, matrix);
                 matrix.copyToArray(rigidbodyMatrixBuffer, bufferIndex * 16);
+
+                colorBuffer[bufferIndex * 3 + 0] = Math.random();
+                colorBuffer[bufferIndex * 3 + 1] = Math.random();
+                colorBuffer[bufferIndex * 3 + 2] = Math.random();
             }
         }
 
         baseBox.thinInstanceSetBuffer("matrix", rigidbodyMatrixBuffer, 16, false);
+        baseBox.thinInstanceSetBuffer("color", colorBuffer, 3, true);
 
         scene.onDisposeObservable.addOnce(() => {
             physicsWorld.destroyPhysicsObject(physicsObjectId);
@@ -137,7 +142,9 @@ export class SceneBuilder implements ISceneBuilder {
 
         scene.registerBeforeRender(() => {
             // const deltaTime = scene.getEngine().getDeltaTime() / 1000;
-            physicsWorld.stepSimulation(1 / 60, 120, 1 / 120);
+            // physicsWorld.stepSimulation(1 / 60, 120, 1 / 120);
+
+            physicsWorld.stepSimulation(1 / 60, 10, 1 / 60);
 
             const transformPtr = physicsWorld.getTransforms(physicsObjectId);
             const wasmMatrixBuffer = new Float32Array(wasmInternal.memory.buffer, transformPtr, rigidbodyMatrixBuffer.length);
