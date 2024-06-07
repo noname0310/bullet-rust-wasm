@@ -51,8 +51,9 @@ For windows, you can install the dependencies using the following links:
 - [nodejs and npm](https://nodejs.org/en/)
 - [rust](https://www.rust-lang.org/)
 - [clang and llvm](https://visualstudio.microsoft.com/vs/) (install visual studio with Clang and LLVM tools)
-- 
+
 ![alt text](image.png)
+
 **Note:** Make sure to install the Clang and LLVM tools when installing visual studio.
 
 After installing the dependencies, run the following commands:
