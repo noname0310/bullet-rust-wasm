@@ -2,6 +2,11 @@
 
 Experimental project to compile Bullet Physics to WebAssembly for rust wasm projects.
 
+![alt text](image-1.png)
+*demonstrating 19,200 rigid bodies simulated in real-time using bullet physics in a browser environment*
+
+# [Live Demo](https://bullet-rust-wasm.vercel.app)
+
 ## Overview
 
 **bullet physics is written in C++** and uses many stdlib features in its codebase.
