@@ -5,6 +5,8 @@
     "scripts": {
         "start": "cross-env RUSTFLAGS=\"-Ctarget-feature=+simd128,+atomics,+bulk-memory,+mutable-globals\" webpack serve --mode development",
         "build": "cross-env RUSTFLAGS=\"-Ctarget-feature=+simd128,+atomics,+bulk-memory,+mutable-globals\" webpack --mode production",
+        "ubuntu-setup": "sudo apt-get install -y rustc cargo clang llvm",
+        "vercel-build": "npm run ubuntu-setup && npm run build",
         "lint": "eslint --ext .ts,.tsx . --fix --cache"
     },
     "author": "noname0310",
