@@ -1,4 +1,4 @@
-import "@babylonjs/core/Loading/loadingScreen";
+import "@babylonjs/core/Meshes/thinInstanceMesh";
 
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
@@ -11,8 +11,8 @@ import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
 import { Scene } from "@babylonjs/core/scene";
-import { Inspector } from "@babylonjs/inspector";
 
+// import { Inspector } from "@babylonjs/inspector";
 import type { ISceneBuilder } from "./baseRuntime";
 import * as wasmBindgen from "./wasm/index";
 
@@ -212,7 +212,7 @@ export class SceneBuilder implements ISceneBuilder {
         statDiv.appendChild(threadCountElement);
         threadCountElement.textContent = `Thread Count: ${navigator.hardwareConcurrency}`;
 
-        Inspector.Show;//(scene, { });
+        // Inspector.Show;//(scene, { });
         return scene;
     }
 }

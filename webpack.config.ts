@@ -60,7 +60,7 @@ export default (env: any): webpack.Configuration & { devServer?: WebpackDevServe
             outDir: path.resolve(__dirname, "src/wasm"),
             outName: "index",
             extraArgs: "--target web",
-            forceMode: "development"
+            forceMode: env.production ? "production" : "development"
         })
     ],
     devServer: {
