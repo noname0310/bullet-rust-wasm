@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  buind-and-pullrequest:
+  build-and-pullrequest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,12 +41,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Build and deploy static content'
-          title: 'Build and deploy static content'
-          body: 'This is an automated pull request to deploy static content to GitHub Pages.'
-          branch: 'deploy'
-          base: 'master'
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: deploy
+          FOLDER: test_dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
