@@ -5,7 +5,7 @@ Experimental project to compile Bullet Physics to WebAssembly for rust wasm proj
 ![alt text](image-1.png)
 *demonstrating 19,200 rigid bodies simulated in real-time using bullet physics in a browser environment*
 
-# [Live Demo](https://bullet-rust-wasm.vercel.app)
+# [Live Demo](https://bullet-rust-wasm.netlify.app/)
 
 ## Overview
 
