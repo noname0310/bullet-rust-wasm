@@ -40,7 +40,7 @@ jobs:
           node-version: 18
         
       - name: Install LLVM and Clang
-        run: sudo apt-get update && sudo apt-get install -y llvm clang
+        run: sudo apt-get install llvm clang
         
       - name: Install dependencies
         run: npm ci

@@ -1403,15 +1403,15 @@ wasm_f64x2_convert_low_u32x4(v128_t __a) {
   return (v128_t) __builtin_convertvector((__u32x2){__a[0], __a[1]}, __f64x2);
 }
 
-static __inline__ v128_t __DEFAULT_FN_ATTRS
-wasm_i32x4_trunc_sat_f64x2_zero(v128_t __a) {
-  return (v128_t)__builtin_wasm_trunc_sat_s_zero_f64x2_i32x4((__f64x2)__a);
-}
+// static __inline__ v128_t __DEFAULT_FN_ATTRS
+// wasm_i32x4_trunc_sat_f64x2_zero(v128_t __a) {
+//   return (v128_t)__builtin_wasm_trunc_sat_s_zero_f64x2_i32x4((__f64x2)__a);
+// }
 
-static __inline__ v128_t __DEFAULT_FN_ATTRS
-wasm_u32x4_trunc_sat_f64x2_zero(v128_t __a) {
-  return (v128_t)__builtin_wasm_trunc_sat_u_zero_f64x2_i32x4((__f64x2)__a);
-}
+// static __inline__ v128_t __DEFAULT_FN_ATTRS
+// wasm_u32x4_trunc_sat_f64x2_zero(v128_t __a) {
+//   return (v128_t)__builtin_wasm_trunc_sat_u_zero_f64x2_i32x4((__f64x2)__a);
+// }
 
 static __inline__ v128_t __DEFAULT_FN_ATTRS
 wasm_f32x4_demote_f64x2_zero(v128_t __a) {
@@ -1766,53 +1766,53 @@ wasm_u64x2_load_32x2(const void *__mem) {
   __attribute__((__always_inline__, __nodebug__, __target__("relaxed-simd"),   \
                  __min_vector_width__(128)))
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_f32x4_relaxed_madd(v128_t __a, v128_t __b, v128_t __c) {
-  return (v128_t)__builtin_wasm_relaxed_madd_f32x4((__f32x4)__a, (__f32x4)__b,
-                                                   (__f32x4)__c);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_f32x4_relaxed_madd(v128_t __a, v128_t __b, v128_t __c) {
+//   return (v128_t)__builtin_wasm_relaxed_madd_f32x4((__f32x4)__a, (__f32x4)__b,
+//                                                    (__f32x4)__c);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_f32x4_relaxed_nmadd(v128_t __a, v128_t __b, v128_t __c) {
-  return (v128_t)__builtin_wasm_relaxed_nmadd_f32x4((__f32x4)__a, (__f32x4)__b,
-                                                    (__f32x4)__c);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_f32x4_relaxed_nmadd(v128_t __a, v128_t __b, v128_t __c) {
+//   return (v128_t)__builtin_wasm_relaxed_nmadd_f32x4((__f32x4)__a, (__f32x4)__b,
+//                                                     (__f32x4)__c);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_f64x2_relaxed_madd(v128_t __a, v128_t __b, v128_t __c) {
-  return (v128_t)__builtin_wasm_relaxed_madd_f64x2((__f64x2)__a, (__f64x2)__b,
-                                                   (__f64x2)__c);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_f64x2_relaxed_madd(v128_t __a, v128_t __b, v128_t __c) {
+//   return (v128_t)__builtin_wasm_relaxed_madd_f64x2((__f64x2)__a, (__f64x2)__b,
+//                                                    (__f64x2)__c);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_f64x2_relaxed_nmadd(v128_t __a, v128_t __b, v128_t __c) {
-  return (v128_t)__builtin_wasm_relaxed_nmadd_f64x2((__f64x2)__a, (__f64x2)__b,
-                                                    (__f64x2)__c);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_f64x2_relaxed_nmadd(v128_t __a, v128_t __b, v128_t __c) {
+//   return (v128_t)__builtin_wasm_relaxed_nmadd_f64x2((__f64x2)__a, (__f64x2)__b,
+//                                                     (__f64x2)__c);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i8x16_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
-  return (v128_t)__builtin_wasm_relaxed_laneselect_i8x16(
-      (__i8x16)__a, (__i8x16)__b, (__i8x16)__m);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i8x16_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
+//   return (v128_t)__builtin_wasm_relaxed_laneselect_i8x16(
+//       (__i8x16)__a, (__i8x16)__b, (__i8x16)__m);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i16x8_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
-  return (v128_t)__builtin_wasm_relaxed_laneselect_i16x8(
-      (__i16x8)__a, (__i16x8)__b, (__i16x8)__m);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i16x8_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
+//   return (v128_t)__builtin_wasm_relaxed_laneselect_i16x8(
+//       (__i16x8)__a, (__i16x8)__b, (__i16x8)__m);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i32x4_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
-  return (v128_t)__builtin_wasm_relaxed_laneselect_i32x4(
-      (__i32x4)__a, (__i32x4)__b, (__i32x4)__m);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i32x4_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
+//   return (v128_t)__builtin_wasm_relaxed_laneselect_i32x4(
+//       (__i32x4)__a, (__i32x4)__b, (__i32x4)__m);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i64x2_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
-  return (v128_t)__builtin_wasm_relaxed_laneselect_i64x2(
-      (__i64x2)__a, (__i64x2)__b, (__i64x2)__m);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i64x2_relaxed_laneselect(v128_t __a, v128_t __b, v128_t __m) {
+//   return (v128_t)__builtin_wasm_relaxed_laneselect_i64x2(
+//       (__i64x2)__a, (__i64x2)__b, (__i64x2)__m);
+// }
 
 static __inline__ v128_t __RELAXED_FN_ATTRS
 wasm_i8x16_relaxed_swizzle(v128_t __a, v128_t __s) {
@@ -1850,33 +1850,33 @@ wasm_u32x4_relaxed_trunc_f32x4(v128_t __a) {
   return (v128_t)__builtin_wasm_relaxed_trunc_u_i32x4_f32x4((__f32x4)__a);
 }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i32x4_relaxed_trunc_f64x2_zero(v128_t __a) {
-  return (v128_t)__builtin_wasm_relaxed_trunc_s_zero_i32x4_f64x2((__f64x2)__a);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i32x4_relaxed_trunc_f64x2_zero(v128_t __a) {
+//   return (v128_t)__builtin_wasm_relaxed_trunc_s_zero_i32x4_f64x2((__f64x2)__a);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_u32x4_relaxed_trunc_f64x2_zero(v128_t __a) {
-  return (v128_t)__builtin_wasm_relaxed_trunc_u_zero_i32x4_f64x2((__f64x2)__a);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_u32x4_relaxed_trunc_f64x2_zero(v128_t __a) {
+//   return (v128_t)__builtin_wasm_relaxed_trunc_u_zero_i32x4_f64x2((__f64x2)__a);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i16x8_relaxed_q15mulr(v128_t __a, v128_t __b) {
-  return (v128_t)__builtin_wasm_relaxed_q15mulr_s_i16x8((__i16x8)__a,
-                                                        (__i16x8)__b);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i16x8_relaxed_q15mulr(v128_t __a, v128_t __b) {
+//   return (v128_t)__builtin_wasm_relaxed_q15mulr_s_i16x8((__i16x8)__a,
+//                                                         (__i16x8)__b);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i16x8_relaxed_dot_i8x16_i7x16(v128_t __a, v128_t __b) {
-  return (v128_t)__builtin_wasm_relaxed_dot_i8x16_i7x16_s_i16x8((__i8x16)__a,
-                                                                (__i8x16)__b);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i16x8_relaxed_dot_i8x16_i7x16(v128_t __a, v128_t __b) {
+//   return (v128_t)__builtin_wasm_relaxed_dot_i8x16_i7x16_s_i16x8((__i8x16)__a,
+//                                                                 (__i8x16)__b);
+// }
 
-static __inline__ v128_t __RELAXED_FN_ATTRS
-wasm_i32x4_relaxed_dot_i8x16_i7x16_add(v128_t __a, v128_t __b, v128_t __c) {
-  return (v128_t)__builtin_wasm_relaxed_dot_i8x16_i7x16_add_s_i32x4(
-      (__i8x16)__a, (__i8x16)__b, (__i32x4)__c);
-}
+// static __inline__ v128_t __RELAXED_FN_ATTRS
+// wasm_i32x4_relaxed_dot_i8x16_i7x16_add(v128_t __a, v128_t __b, v128_t __c) {
+//   return (v128_t)__builtin_wasm_relaxed_dot_i8x16_i7x16_add_s_i32x4(
+//       (__i8x16)__a, (__i8x16)__b, (__i32x4)__c);
+// }
 
 // Deprecated intrinsics
 
