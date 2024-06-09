@@ -30,7 +30,7 @@ In conclusion, **bullet physics is now available in the rust web-assembly enviro
 
 - [x] Compile bullet physics to web-assembly without stdlib
 - [x] Create a simple bullet physics binding in rust
-- [ ] Demonstrate bullet physics in a browser environment
+- [x] Demonstrate bullet physics in a browser environment
 - [ ] Publish the project as a crate (currently, no plans to publish the project as a crate)
 
 ## Build and Run Development Server
